@@ -1,3 +1,16 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">FarmaciaGaby</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_icon_content_description">Icono de Farmacia Gaby</string>
+    <string name="splash_text">Farmacia Gaby</string>
+
+    <!-- Login Screen -->
+    <string name="login_logo_content_description">Icono de Farmacia Gaby</string>
+    <string name="login_email_hint">Correo electrónico</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="login_forgotten_password"><u>Olvidé mi contraseña</u></string>
+    <string name="login_button_text">Iniciar sesión</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

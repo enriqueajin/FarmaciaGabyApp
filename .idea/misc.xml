@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/layout/activity_main.xml" value="0.34739583333333335" />
+        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/drawable/ic_icono_farmacia.xml" value="0.1" />
+        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/layout/activity_main.xml" value="0.19375" />
+        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/layout/fragment_reset_password.xml" value="0.30185185185185187" />
+        <entry key="..\:/FarmaciaGaby/repo/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
       </map>
     </option>
   </component>
