@@ -90,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_password" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnContinue"
+                android:id="@+id/btnSignIn"
                 style="@style/BigButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

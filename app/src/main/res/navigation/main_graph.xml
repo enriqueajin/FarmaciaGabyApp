@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/quotationsHistoryFragment">
+
+    <fragment
+        android:id="@+id/quotationsHistoryFragment"
+        android:name="com.farmaciagaby.fragments.QuotationsHistoryFragment"
+        android:label="fragment_quotations_history"
+        tools:layout="@layout/fragment_quotations_history" />
+
+</navigation>
