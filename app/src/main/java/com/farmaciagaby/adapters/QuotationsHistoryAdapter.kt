@@ -28,7 +28,7 @@ class QuotationsHistoryAdapter(private val quotationList: List<Quotation>) :
 
         private val binding = itemView
 
-        public fun setData(quotation: Quotation) {
+        fun setData(quotation: Quotation) {
             binding.tvSupplierName.text = quotation.supplierName
             binding.tvDateValue.text = quotation.date
         }

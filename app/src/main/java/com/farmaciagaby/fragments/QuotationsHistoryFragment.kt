@@ -1,11 +1,10 @@
 package com.farmaciagaby.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.QuotationsHistoryAdapter
@@ -30,12 +29,13 @@ class QuotationsHistoryFragment : Fragment() {
     }
 
     private fun setData() {
-        // Show action bar
+        // Show action bar and set title
         val actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar?.title = resources.getString(R.string.action_bar_quotation_history)
         actionBar?.show()
 
         // Disable action bar back button
-        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(false)
 
         // Set up quotations history adapter
@@ -55,5 +55,9 @@ class QuotationsHistoryFragment : Fragment() {
         val quotationList = arrayListOf(quotation, quotation2, quotation3, quotation4, quotation5, quotation6, quotation7, quotation8, quotation9, quotation10)
         val adapter = QuotationsHistoryAdapter(quotationList)
         binding.rvQuotations.adapter = adapter
+
+        binding.fabNewQuotation.setOnClickListener { view ->
+            Navigation.findNavController(view).navigate(R.id.action_quotationsHistoryFragment_to_main_graph)
+        }
     }
 }

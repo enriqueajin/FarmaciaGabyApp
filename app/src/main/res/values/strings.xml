@@ -1,6 +1,17 @@
 <resources>
-    <!-- App Name -->
+    <!-- App Strings -->
     <string name="app_name">FarmaciaGaby</string>
+    <string name="button_continue">Continuar</string>
+
+    <!--    Navigation Drawer -->
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="navigation_drawer_item_request_quotation">Solicitar cotización</string>
+
+    <string name="action_bar_quotation_history">Historial de cotizaciones</string>
+
+    <!--    General menu -->
+    <string name="general_menu_add_title">Agregar producto</string>
 
     <!-- Splash Screen -->
     <string name="splash_icon_content_description">Icono de Farmacia Gaby</string>
@@ -13,15 +24,21 @@
     <string name="login_forgotten_password"><u>Olvidé mi contraseña</u></string>
     <string name="login_button_text">Iniciar sesión</string>
 
-    <!--    Reset Password Screen-->
+    <!--    Reset Password Screen -->
     <string name="reset_password_title">Ingrese su correo electrónico y le enviaremos un correo para recuperar su contraseña.</string>
     <string name="reset_password_send_button">Enviar</string>
     <string name="reset_password_ok_button">Entendido</string>
     <string name="reset_password_email_sent">Se ha enviado correctamente el correo para la recuperación de su contraseña.</string>
 
-<!--    Quotation Item-->
-    <string name="quotation_item_supplier_name">Proveedor:&#032;</string>
-    <string name="quotation_item_date">Fecha:&#032;</string>
+    <!--    Quotation Item -->
+    <string name="quotation_item_supplier_name">Proveedor:&#160;</string>
+    <string name="quotation_item_date">Fecha:&#160;</string>
+
+    <!--    Quotation History Screen -->
+    <string name="quotation_history_add_icon_content_description">Add new quotation icon</string>
+
+    <!--    Request Quotation Screen -->
+    <string name="request_quotation_title">Seleccione los productos que desea agregar a la cotización:</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

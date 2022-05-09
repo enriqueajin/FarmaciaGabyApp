@@ -5,10 +5,23 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/quotationsHistoryFragment">
 
+    <include app:graph="@navigation/request_quotation_graph" />
+
     <fragment
         android:id="@+id/quotationsHistoryFragment"
         android:name="com.farmaciagaby.fragments.QuotationsHistoryFragment"
         android:label="fragment_quotations_history"
-        tools:layout="@layout/fragment_quotations_history" />
+        tools:layout="@layout/fragment_quotations_history" >
+
+        <action
+            android:id="@+id/action_quotationsHistoryFragment_to_main_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/request_quotation_graph" />
+
+    </fragment>
+
 
 </navigation>
