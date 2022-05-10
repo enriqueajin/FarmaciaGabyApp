@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.SelectQuotationProductsAdapter
@@ -13,12 +14,14 @@ import com.farmaciagaby.models.Product
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.GsonBuilder
 import kotlin.collections.ArrayList
 
 class RequestQuotationFragment : Fragment() {
 
     private lateinit var binding: FragmentRequestQuotationBinding
     private lateinit var adapter: SelectQuotationProductsAdapter
+    private val gson = GsonBuilder().create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,10 @@ class RequestQuotationFragment : Fragment() {
                 Log.d("TAG", "producto: " + product.name)
             }
             Log.d("TAG", "--------------------------------------------")
+
+            val argument = gson.toJson(adapter.getCheckedProducts())
+            var action = RequestQuotationFragmentDirections.actionPassProductListToRequestQuotationDetails(argument)
+            Navigation.findNavController(view).navigate(action)
         }
     }
 

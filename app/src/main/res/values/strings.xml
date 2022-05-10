@@ -3,6 +3,7 @@
     <string name="app_name">FarmaciaGaby</string>
     <string name="button_continue">Continuar</string>
     <string name="button_add">Agregar</string>
+    <string name="button_finalize">Finalizar</string>
 
     <!--    Navigation Drawer -->
     <string name="navigation_drawer_open">Open</string>
@@ -43,9 +44,24 @@
     <!--    Request Quotation Screen -->
     <string name="request_quotation_title">Seleccione los productos que desea agregar a la cotización:</string>
 
+    <!--    Request Quotation Details Screen -->
+    <string name="request_quotation_details_supplier_label">Proveedor</string>
+    <string name="request_quotation_details_supplier_hint">Seleccione un proveedor</string>
+    <string name="request_quotation_details_description_hint">Descripción</string>
+    <string name="request_quotation_details_label">Ingrese los detalles de la cotización:</string>
+
     <!--    Add Product Dialog -->
     <string name="add_product_dialog_title">Agregar producto</string>
     <string name="add_product_product_name_hint">Nombre del producto</string>
+
+    <string-array
+        name="suppliers_array">
+        <item>Bendición y Fe</item>
+        <item>Jogral</item>
+        <item>Promeco</item>
+        <item>Droguería La Esperanza</item>
+        <item>Galeno</item>
+    </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

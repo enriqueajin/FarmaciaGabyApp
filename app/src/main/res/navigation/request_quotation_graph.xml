@@ -3,11 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/request_quotation_graph"
-    app:startDestination="@id/requestQuotationFragment2">
+    app:startDestination="@id/requestQuotationFragment">
 
     <fragment
-        android:id="@+id/requestQuotationFragment2"
+        android:id="@+id/requestQuotationFragment"
         android:name="com.farmaciagaby.fragments.RequestQuotationFragment"
         android:label="fragment_request_quotation"
-        tools:layout="@layout/fragment_request_quotation" />
+        tools:layout="@layout/fragment_request_quotation" >
+
+        <action
+            android:id="@+id/action_pass_product_list_to_request_quotation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/requestQuotationDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/requestQuotationDetailsFragment"
+        android:name="com.farmaciagaby.fragments.RequestQuotationDetailsFragment"
+        android:label="fragment_request_quotation_details"
+        tools:layout="@layout/fragment_request_quotation_details" >
+
+        <argument
+            android:name="productList"
+            app:argType="string"
+            android:defaultValue="String" />
+
+    </fragment>
 </navigation>
