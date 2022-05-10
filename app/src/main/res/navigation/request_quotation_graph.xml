@@ -9,15 +9,15 @@
         android:id="@+id/requestQuotationFragment"
         android:name="com.farmaciagaby.fragments.RequestQuotationFragment"
         android:label="fragment_request_quotation"
-        tools:layout="@layout/fragment_request_quotation" >
+        tools:layout="@layout/fragment_request_quotation">
 
         <action
             android:id="@+id/action_pass_product_list_to_request_quotation_details"
+            app:destination="@id/requestQuotationDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:destination="@id/requestQuotationDetailsFragment" />
+            app:popExitAnim="@android:anim/slide_out_right" />
 
     </fragment>
 
@@ -25,12 +25,47 @@
         android:id="@+id/requestQuotationDetailsFragment"
         android:name="com.farmaciagaby.fragments.RequestQuotationDetailsFragment"
         android:label="fragment_request_quotation_details"
-        tools:layout="@layout/fragment_request_quotation_details" >
+        tools:layout="@layout/fragment_request_quotation_details">
 
         <argument
             android:name="productList"
-            app:argType="string"
-            android:defaultValue="String" />
+            android:defaultValue="String"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_quotation_details_to_quotation_preview"
+            app:destination="@id/requestQuotationPreviewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/successfulRequestQuotationFragment"
+        android:name="com.farmaciagaby.fragments.SuccessfulRequestQuotationFragment"
+        android:label="fragment_successful_request_quotation"
+        tools:layout="@layout/fragment_successful_request_quotation">
+
+        <argument
+            android:name="productList"
+            android:defaultValue="String"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/requestQuotationPreviewFragment"
+        android:name="com.farmaciagaby.fragments.RequestQuotationPreviewFragment"
+        android:label="fragment_request_quotation_preview"
+        tools:layout="@layout/fragment_request_quotation_preview">
+
+        <argument
+            android:name="productList"
+            android:defaultValue="String"
+            app:argType="string" />
+
+    </fragment>
+
 </navigation>

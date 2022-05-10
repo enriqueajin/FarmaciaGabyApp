@@ -4,6 +4,7 @@
     <string name="button_continue">Continuar</string>
     <string name="button_add">Agregar</string>
     <string name="button_finalize">Finalizar</string>
+    <string name="button_share">Compartir</string>
 
     <!--    Navigation Drawer -->
     <string name="navigation_drawer_open">Open</string>
@@ -50,12 +51,21 @@
     <string name="request_quotation_details_description_hint">Descripción</string>
     <string name="request_quotation_details_label">Ingrese los detalles de la cotización:</string>
 
+    <!--    Successful Request Quotation Screen -->
+    <string name="successful_request_icon_content_description">Icono de cheque</string>
+    <string name="successful_request_title">Gestión realizada exitosamente</string>
+    <string name="successful_request_transaction_label">Gestión:&#160;</string>
+    <string name="successful_request_date_label">Fecha:&#160;</string>
+    <string name="successful_request_time_label">Hora:&#160;</string>
+
+    <!--    Request Quotation Preview Screen -->
+    <string name="quotation_preview_title">Solicitud de cotización</string>
+
     <!--    Add Product Dialog -->
     <string name="add_product_dialog_title">Agregar producto</string>
     <string name="add_product_product_name_hint">Nombre del producto</string>
 
-    <string-array
-        name="suppliers_array">
+    <string-array name="suppliers_array">
         <item>Bendición y Fe</item>
         <item>Jogral</item>
         <item>Promeco</item>

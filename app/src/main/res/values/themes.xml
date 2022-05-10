@@ -35,6 +35,18 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
+    <style name="RightJointButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/blue_primary</item>
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:paddingBottom">13dp</item>
+    </style>
+
+    <style name="LeftJointButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/farmacia_gaby_green</item>
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:paddingBottom">13dp</item>
+    </style>
+
     <!--    Drawer toggle style -->
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>

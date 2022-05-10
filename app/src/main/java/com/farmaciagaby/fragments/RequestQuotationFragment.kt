@@ -8,19 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
-import com.farmaciagaby.adapters.SelectQuotationProductsAdapter
+import com.farmaciagaby.adapters.CheckProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
 import com.farmaciagaby.models.Product
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
-import kotlin.collections.ArrayList
 
 class RequestQuotationFragment : Fragment() {
 
     private lateinit var binding: FragmentRequestQuotationBinding
-    private lateinit var adapter: SelectQuotationProductsAdapter
+    private lateinit var adapter: CheckProductsAdapter
     private val gson = GsonBuilder().create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +61,7 @@ class RequestQuotationFragment : Fragment() {
             Product("Toallitas húmedas")
         )
 
-        adapter = SelectQuotationProductsAdapter(productList)
+        adapter = CheckProductsAdapter(productList)
         binding.rvQuotationProducts.adapter = adapter
 
         binding.btnContinue.setOnClickListener { view ->
@@ -72,7 +71,7 @@ class RequestQuotationFragment : Fragment() {
             Log.d("TAG", "--------------------------------------------")
 
             val argument = gson.toJson(adapter.getCheckedProducts())
-            var action = RequestQuotationFragmentDirections.actionPassProductListToRequestQuotationDetails(argument)
+            val action = RequestQuotationFragmentDirections.actionPassProductListToRequestQuotationDetails(argument)
             Navigation.findNavController(view).navigate(action)
         }
     }

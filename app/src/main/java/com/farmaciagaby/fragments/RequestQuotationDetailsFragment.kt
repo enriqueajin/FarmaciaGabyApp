@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavArgs
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.FragmentRequestQuotationDetailsBinding
@@ -51,13 +52,18 @@ class RequestQuotationDetailsFragment : Fragment() {
         // Set up suppliers spinner data
         val suppliers = arrayOf("Promeco", "Bendición y Fe", "Droguería La Esperanza", "Jogral")
         val adapter =
-            ArrayAdapter<String>(
-                context!!,
+            ArrayAdapter(
+                requireContext(),
                 R.layout.dropdown_menu_supplier_item,
                suppliers
             )
 
         binding.spinnerSuppliers.setAdapter(adapter)
         binding.spinnerSuppliers.requestFocus()
+
+        binding.btnContinue.setOnClickListener { view ->
+            val action = RequestQuotationDetailsFragmentDirections.actionQuotationDetailsToQuotationPreview(args.productList)
+            Navigation.findNavController(view).navigate(action)
+        }
     }
 }

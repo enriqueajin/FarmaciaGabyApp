@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.farmaciagaby.databinding.SelectProductItemBinding
 import com.farmaciagaby.models.Product
 
-class SelectQuotationProductsAdapter(private val productList: ArrayList<Product>) :
-    RecyclerView.Adapter<SelectQuotationProductsAdapter.ViewHolder>() {
+class CheckProductsAdapter(private val productList: ArrayList<Product>) :
+    RecyclerView.Adapter<CheckProductsAdapter.ViewHolder>() {
 
     private var checkedProductsList = arrayListOf<Product>()
 
@@ -21,8 +21,10 @@ class SelectQuotationProductsAdapter(private val productList: ArrayList<Product>
         holder.setData(product)
         holder.binding.cbSelectProduct.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                product.isChecked = true
                 checkedProductsList.add(product)
             } else {
+                product.isChecked = false
                 val myProduct = checkedProductsList.single { checkedProduct -> product == checkedProduct }
                 checkedProductsList.remove(myProduct)
             }
@@ -31,7 +33,7 @@ class SelectQuotationProductsAdapter(private val productList: ArrayList<Product>
         // Mark as checked a product that was added
         if (product.isChecked) {
             holder.binding.cbSelectProduct.isChecked = true
-            product.isChecked = false
+//            product.isChecked = false
         }
     }
 
