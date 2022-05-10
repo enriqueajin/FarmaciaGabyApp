@@ -1,17 +1,24 @@
 package com.farmaciagaby.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.SelectQuotationProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
 import com.farmaciagaby.models.Product
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import kotlin.collections.ArrayList
 
 class RequestQuotationFragment : Fragment() {
 
     private lateinit var binding: FragmentRequestQuotationBinding
+    private lateinit var adapter: SelectQuotationProductsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +36,15 @@ class RequestQuotationFragment : Fragment() {
     }
 
     private fun setData() {
+        // Show action bar and set title
+        val actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar?.title = resources.getString(R.string.action_bar_request_quotation)
+
+        // Set up the select quotation products adapter
         binding.rvQuotationProducts.layoutManager = LinearLayoutManager(context);
 
         // Fake data
-        val productList = listOf(
+        val productList = arrayListOf(
             Product("Tabcin"),
             Product("Pañal de adulto"),
             Product("Jeringa"),
@@ -47,8 +59,15 @@ class RequestQuotationFragment : Fragment() {
             Product("Toallitas húmedas")
         )
 
-        val adapter = SelectQuotationProductsAdapter(productList)
+        adapter = SelectQuotationProductsAdapter(productList)
         binding.rvQuotationProducts.adapter = adapter
+
+        binding.btnContinue.setOnClickListener { view ->
+            for (product in adapter.getCheckedProducts()) {
+                Log.d("TAG", "producto: " + product.name)
+            }
+            Log.d("TAG", "--------------------------------------------")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -58,10 +77,29 @@ class RequestQuotationFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_add_product -> {
-                // Open add product dialog
+                showBottomDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showBottomDialog() {
+        val dialog = context?.let { BottomSheetDialog(it, R.style.BottomSheetDialogTheme) }
+        val view = layoutInflater.inflate(R.layout.add_product_dialog, null)
+
+        dialog?.setContentView(view)
+        dialog?.show()
+
+
+        val input = dialog?.findViewById<TextInputEditText>(R.id.et_product_name)
+        input?.requestFocus()
+
+        val button = dialog?.findViewById<MaterialButton>(R.id.btnAdd)
+        button?.setOnClickListener {
+            val product = Product(input?.text.toString().trim())
+            adapter.addNewProduct(product)
+            dialog.dismiss()
         }
     }
 }

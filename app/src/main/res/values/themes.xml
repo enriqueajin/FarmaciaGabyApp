@@ -34,11 +34,20 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
-<!--    Drawer toggle style -->
+    <!--    Drawer toggle style -->
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/white</item>
     </style>
 
+    <!--    Bottom sheet dialog style -->
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <!--    Bottom sheet style -->
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="background">@android:color/transparent</item>
+    </style>
 
 </resources>
