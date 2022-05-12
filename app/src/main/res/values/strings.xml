@@ -1,3 +1,78 @@
 <resources>
+    <!-- App Strings -->
     <string name="app_name">FarmaciaGaby</string>
+    <string name="button_continue">Continuar</string>
+    <string name="button_add">Agregar</string>
+    <string name="button_finalize">Finalizar</string>
+    <string name="button_share">Compartir</string>
+
+    <!--    Navigation Drawer -->
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+    <string name="navigation_drawer_item_request_quotation">Solicitar cotización</string>
+
+    <!--    Action bar titles -->
+    <string name="action_bar_quotation_history">Historial de cotizaciones</string>
+    <string name="action_bar_request_quotation">Solicitar cotización</string>
+    <string name="action_bar_quotation_preview">Revisar cotización</string>
+
+    <!--    General menu -->
+    <string name="general_menu_add_title">Agregar producto</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_icon_content_description">Icono de Farmacia Gaby</string>
+    <string name="splash_text">Farmacia Gaby</string>
+
+    <!-- Login Screen -->
+    <string name="login_logo_content_description">Icono de Farmacia Gaby</string>
+    <string name="login_email_hint">Correo electrónico</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="login_forgotten_password"><u>Olvidé mi contraseña</u></string>
+    <string name="login_button_text">Iniciar sesión</string>
+
+    <!--    Reset Password Screen -->
+    <string name="reset_password_title">Ingrese su correo electrónico y le enviaremos un correo para recuperar su contraseña.</string>
+    <string name="reset_password_send_button">Enviar</string>
+    <string name="reset_password_ok_button">Entendido</string>
+    <string name="reset_password_email_sent">Se ha enviado correctamente el correo para la recuperación de su contraseña.</string>
+
+    <!--    Quotation Item -->
+    <string name="quotation_item_supplier_name">Proveedor:&#160;</string>
+    <string name="quotation_item_date">Fecha:&#160;</string>
+
+    <!--    Quotation History Screen -->
+    <string name="quotation_history_add_icon_content_description">Add new quotation icon</string>
+
+    <!--    Request Quotation Screen -->
+    <string name="request_quotation_title">Seleccione los productos que desea agregar a la cotización:</string>
+
+    <!--    Request Quotation Details Screen -->
+    <string name="request_quotation_details_supplier_label">Proveedor</string>
+    <string name="request_quotation_details_supplier_hint">Seleccione un proveedor</string>
+    <string name="request_quotation_details_description_hint">Descripción</string>
+    <string name="request_quotation_details_label">Ingrese los detalles de la cotización:</string>
+
+    <!--    Successful Request Quotation Screen -->
+    <string name="successful_request_icon_content_description">Icono de cheque</string>
+    <string name="successful_request_title">Gestión realizada exitosamente</string>
+    <string name="successful_request_transaction_label">Gestión:&#160;</string>
+    <string name="successful_request_date_label">Fecha:&#160;</string>
+    <string name="successful_request_time_label">Hora:&#160;</string>
+
+    <!--    Request Quotation Preview Screen -->
+    <string name="quotation_preview_title">Solicitud de cotización</string>
+
+    <!--    Add Product Dialog -->
+    <string name="add_product_dialog_title">Agregar producto</string>
+    <string name="add_product_product_name_hint">Nombre del producto</string>
+
+    <string-array name="suppliers_array">
+        <item>Bendición y Fe</item>
+        <item>Jogral</item>
+        <item>Promeco</item>
+        <item>Droguería La Esperanza</item>
+        <item>Galeno</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
