@@ -58,7 +58,12 @@ class RequestQuotationFragment : Fragment() {
             Product("Crema humectante"),
             Product("Agua Misclear"),
             Product("Protector Solar"),
-            Product("Toallitas húmedas")
+            Product("Toallitas húmedas"),
+            Product("Talco de bebé"),
+            Product("Peptobismol"),
+            Product("Vicks"),
+            Product("Cofal"),
+            Product("Pastilla de teñir"),
         )
 
         adapter = CheckProductsAdapter(productList)

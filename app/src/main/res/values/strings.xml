@@ -14,6 +14,7 @@
     <!--    Action bar titles -->
     <string name="action_bar_quotation_history">Historial de cotizaciones</string>
     <string name="action_bar_request_quotation">Solicitar cotización</string>
+    <string name="action_bar_quotation_preview">Revisar cotización</string>
 
     <!--    General menu -->
     <string name="general_menu_add_title">Agregar producto</string>
