@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "397067630986",
+    "firebase_url": "https://farmaciasgaby-79a5e.firebaseio.com",
+    "project_id": "farmaciasgaby-79a5e",
+    "storage_bucket": "farmaciasgaby-79a5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397067630986:android:eecf53e689538bd7cb7073",
+        "android_client_info": {
+          "package_name": "com.farmaciagaby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397067630986-lvknac7ferr5ojl5sbkdh5eo8p47iorv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farmaciagaby",
+            "certificate_hash": "d70a516206c9c379e9a3290944ed2ed631bd3272"
+          }
+        },
+        {
+          "client_id": "397067630986-jf5fg0u0mm759h7q0l72vot5rouo7tan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4vx3vWf8_7n7XKoKEsSB6CFlDiPAK42Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397067630986-jf5fg0u0mm759h7q0l72vot5rouo7tan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
