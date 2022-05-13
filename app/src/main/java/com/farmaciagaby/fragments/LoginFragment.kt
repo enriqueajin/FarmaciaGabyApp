@@ -36,7 +36,7 @@ class LoginFragment : Fragment() {
         binding.etEmail.requestFocus()
 
         binding.btnSignIn.setOnClickListener { view ->
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mainGraph)
+            Navigation.findNavController(view).navigate(R.id.action_login_to_main_activity)
         }
 
         // Navigate to reset password fragment

@@ -45,6 +45,10 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_login_to_main_activity"
+            app:destination="@id/mainActivity" />
+
     </fragment>
 
     <fragment
@@ -58,5 +62,9 @@
             app:destination="@id/loginFragment" />
 
     </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.farmaciagaby.activities.MainActivity" />
 
 </navigation>
