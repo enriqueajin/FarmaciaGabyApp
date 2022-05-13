@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.ActivityLoginBinding
+import com.farmaciagaby.network.FirebaseHelper
 
 class LoginActivity : AppCompatActivity() {
 
