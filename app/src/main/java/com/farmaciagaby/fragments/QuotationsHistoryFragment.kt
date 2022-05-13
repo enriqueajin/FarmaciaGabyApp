@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.QuotationsHistoryAdapter
 import com.farmaciagaby.databinding.FragmentQuotationsHistoryBinding
 import com.farmaciagaby.models.Quotation
+import com.farmaciagaby.viewmodels.ProductViewModel
 
 class QuotationsHistoryFragment : Fragment() {
 
