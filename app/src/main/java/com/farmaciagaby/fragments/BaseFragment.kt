@@ -88,8 +88,8 @@ open class BaseFragment : Fragment() {
         try {
             checkForFolder()
 
-            // Naming file with format 'Cotización 11-05-2022'
-            val fileName = "Cotización " + SimpleDateFormat("dd-MM-yyyy HH:mm").format(Date())
+            // Naming file with format 'Cotización 11-05-2022 12:15 PM'
+            val fileName = "Cotización " + SimpleDateFormat("dd-MM-yyyy HH:mm:ss aaa").format(Calendar.getInstance().time)
 
             // Hide 'Continue' button
             binding.btnContinue.visibility = View.INVISIBLE

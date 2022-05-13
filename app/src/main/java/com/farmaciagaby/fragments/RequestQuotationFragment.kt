@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.CheckProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
 import com.farmaciagaby.models.Product
+import com.farmaciagaby.viewmodels.ProductViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -21,6 +24,7 @@ class RequestQuotationFragment : Fragment() {
     private lateinit var binding: FragmentRequestQuotationBinding
     private lateinit var adapter: CheckProductsAdapter
     private val gson = GsonBuilder().create()
+    private val productViewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +114,19 @@ class RequestQuotationFragment : Fragment() {
         button?.setOnClickListener {
             val product = Product(input?.text.toString().trim())
             adapter.addNewProduct(product)
+            addProductToDatabase(product.name.trim())
             dialog.dismiss()
         }
+    }
+
+    /**
+     * Insert a product to the database
+     * @param productName String with the product name
+     */
+        private fun addProductToDatabase(productName: String) {
+        productViewModel.createProduct(productName)
+        productViewModel.productLiveData.observe(this, Observer { product ->
+
+        })
     }
 }
