@@ -1,6 +1,8 @@
 package com.farmaciagaby.fragments
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,8 +13,10 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -166,6 +170,16 @@ open class BaseFragment : Fragment() {
         if (!file.exists()) {
             file.mkdirs()
         }
+    }
+
+    fun validateEmail(email: String): Boolean {
+        val pattern = Patterns.EMAIL_ADDRESS
+        val matcher = pattern.matcher(email)
+        return matcher.find()
+    }
+
+    fun validate(value: String) : Boolean {
+        return value.trim().isNotEmpty()
     }
 
     //    override fun onRequestPermissionsResult(

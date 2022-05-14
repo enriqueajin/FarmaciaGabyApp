@@ -21,7 +21,14 @@
             app:popExitAnim="@android:anim/slide_out_right"
             app:destination="@id/request_quotation_graph" />
 
+        <action
+            android:id="@+id/action_main_to_login_activity"
+            app:destination="@id/loginActivity" />
+
     </fragment>
 
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.farmaciagaby.activities.LoginActivity" />
 
 </navigation>

@@ -1,6 +1,7 @@
 package com.farmaciagaby.activities
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +21,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.ActivityMainBinding
+import com.farmaciagaby.network.FirebaseHelper
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +37,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var listener: NavController.OnDestinationChangedListener
 
     private lateinit var binding: ActivityMainBinding;
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = FirebaseHelper.getAuthentication().currentUser
+        if (currentUser != null) {
+            Log.d("TAG", "onStart: you are logged in")
+        } else {
+            Log.d("TAG", "onStart: you are not logged in")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
