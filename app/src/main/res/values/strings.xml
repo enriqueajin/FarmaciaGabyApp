@@ -35,6 +35,7 @@
     <string name="reset_password_send_button">Enviar</string>
     <string name="reset_password_ok_button">Entendido</string>
     <string name="reset_password_email_sent">Se ha enviado correctamente el correo para la recuperación de su contraseña.</string>
+    <string name="reset_password_email_sent_failed">Ocurrió un problema enviando el correo. Por favor intente nuevamente.</string>
 
     <!--    Quotation Item -->
     <string name="quotation_item_supplier_name">Proveedor:&#160;</string>
