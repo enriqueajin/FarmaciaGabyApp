@@ -7,13 +7,8 @@
             android:title="@string/navigation_drawer_item_request_quotation" />
 
         <item
-            android:id="@+id/nav_item_two"
+            android:id="@+id/nav_item_manage_products"
             android:icon="@drawable/ic_icono_farmacia"
-            android:title="Opción 2" />
-
-        <item
-            android:id="@+id/nav_item_three"
-            android:icon="@drawable/ic_icono_farmacia"
-            android:title="Opción 3" />
+            android:title="@string/navigation_drawer_item_manage_products" />
     </group>
 </menu>

@@ -3,7 +3,7 @@
     android:id="@+id/nav_header"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@color/blue_primary"
+    android:background="#D1E0FA"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -14,15 +14,16 @@
 
     <ImageView
         android:id="@+id/iv_nav_header"
-        android:layout_width="64dp"
-        android:layout_height="67dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:src="@drawable/ic_icono_farmacia" />
 
     <TextView
         android:id="@+id/tv_nav_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
+        android:textColor="@color/black"
         android:text="Usuario de pueba"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

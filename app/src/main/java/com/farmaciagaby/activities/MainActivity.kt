@@ -1,15 +1,10 @@
 package com.farmaciagaby.activities
 
-import android.content.Context
-import android.content.DialogInterface
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -34,7 +29,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //    option 2
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var listener: NavController.OnDestinationChangedListener
 
     private lateinit var binding: ActivityMainBinding;
 
@@ -81,11 +75,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView : NavigationView = findViewById(R.id.nav_view)
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
+
+        // Set navigation drawer user name
+        navigationView.getHeaderView(0).findViewById<TextView>(R.id.tv_nav_header).text = "Bienvenido, Enrique Ajin"
+
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         val toolbar : Toolbar = findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        findViewById<TextView>(R.id.tv_logout).setOnClickListener {
+            showSignOutDialog()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -100,11 +101,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_item_request_quotation -> navController.navigate(R.id.request_quotation_graph)
-            R.id.nav_item_two -> Log.d("TAG", "nav item two")
-            R.id.nav_item_three -> Log.d("TAG", "nav item three")
+            R.id.nav_item_manage_products -> Log.d("TAG", "pending manage products screen")
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun showSignOutDialog() {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Está seguro que desea cerrar sesión?")
+            .setPositiveButton("Aceptar") { dialogInterface, i ->
+                FirebaseHelper.loggedOut()
+                val navHostFragment = supportFragmentManager.findFragmentById(androidx.navigation.fragment.R.id.nav_host_fragment_container) as NavHostFragment
+                val navController = navHostFragment.navController
+                navController.navigate(R.id.action_main_to_login_activity)
+                finish()
+            }
+            .setNegativeButton("Cancelar") { dialogInterface, i -> }
+            .show()
     }
 
 //
