@@ -10,6 +10,8 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
     <string name="navigation_drawer_item_request_quotation">Solicitar cotización</string>
+    <string name="navigation_drawer_item_quotations_history">Historial de cotizaciones</string>
+    <string name="navigation_drawer_item_manage_products">Administrar productos</string>
 
     <!--    Action bar titles -->
     <string name="action_bar_quotation_history">Historial de cotizaciones</string>

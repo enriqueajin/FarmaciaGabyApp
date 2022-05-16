@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.QuotationItemBinding
+import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Quotation
+import java.text.SimpleDateFormat
+import java.util.*
 
-class QuotationsHistoryAdapter(private val quotationList: List<Quotation>) :
+class QuotationsHistoryAdapter(private val quotationList: List<Detalle>) :
     RecyclerView.Adapter<QuotationsHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,9 +31,13 @@ class QuotationsHistoryAdapter(private val quotationList: List<Quotation>) :
 
         private val binding = itemView
 
-        fun setData(quotation: Quotation) {
-            binding.tvSupplierName.text = quotation.supplierName
-            binding.tvDateValue.text = quotation.date
+        fun setData(quotation: Detalle) {
+            binding.tvSupplierName.text = quotation.proveedor
+            binding.tvDateValue.text = formatDate(quotation.fecha.toDate())
+        }
+
+        private fun formatDate(date: Date): String {
+            return SimpleDateFormat("dd-MM-yyyy").format(date)
         }
     }
 }

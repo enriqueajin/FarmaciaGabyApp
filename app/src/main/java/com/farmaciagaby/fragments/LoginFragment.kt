@@ -44,6 +44,41 @@ class LoginFragment : BaseFragment() {
                 activity!!.finish()
             }
         })
+
+        var db = Firebase.firestore
+//        val product = Product("Mi producto")
+//        db.collection("cotizacion").add(product)
+
+//        val products = db.collection("producto").get().addOnCompleteListener(requireActivity(), object : OnCompleteListener<QuerySnapshot?> {
+//            override fun onComplete(task: Task<QuerySnapshot?>) {
+//                val list = arrayListOf<String>()
+//                for (doc in task.result!!) {
+//                    list.add(doc.id)
+//                }
+//                Log.d("TAG", "onComplete: $list")
+//            }
+//        })
+        val listOfMaps = arrayListOf<Map<String, Any>>()
+        val productList = arrayListOf<Any?>()
+        val products = db.collection("producto").get().addOnSuccessListener { documents ->
+            documents.forEachIndexed { index, document ->
+                listOfMaps.add(document.data)
+                Log.d("TAG", "onCreateView: ")
+                productList.add(document.data["nombre"])
+            }
+            val productArray = productList.toArray()
+
+            val detalle = Detalle(
+                "segunda cotización del año",
+                Timestamp(Date()),
+                "epfLJp58sC06YkewgmVj",
+                "Jerausa",
+                productList
+            )
+            val quotationDetails = QuotationDetail(detalle)
+//            val cotizaciones = db.collection("cotizacion").add(detalle)
+
+        }
     }
 
     private fun setData() {
