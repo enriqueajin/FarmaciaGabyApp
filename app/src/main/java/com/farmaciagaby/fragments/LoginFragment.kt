@@ -2,21 +2,21 @@ package com.farmaciagaby.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.FragmentLoginBinding
+import com.farmaciagaby.models.Detalle
+import com.farmaciagaby.models.QuotationDetail
 import com.farmaciagaby.network.FirebaseHelper
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class LoginFragment : BaseFragment() {
 

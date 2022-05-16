@@ -16,11 +16,15 @@ import android.provider.Settings
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.farmaciagaby.R
 import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +36,8 @@ const val SHARE_FILES_PERMISSION_CODE = 200     // Request code for share files 
  * Custom base fragment that provides methods which can be used in any children fragment.
  */
 open class BaseFragment : Fragment() {
+
+    private lateinit var linearProgressIndicator: LinearProgressIndicator
 
     fun requestPermission(isSave: Boolean, activityResultLauncher: ActivityResultLauncher<Intent>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -180,6 +186,15 @@ open class BaseFragment : Fragment() {
 
     fun validate(value: String) : Boolean {
         return value.trim().isNotEmpty()
+    }
+
+    fun showProgressIndicator() {
+        linearProgressIndicator = requireActivity().findViewById(R.id.linear_progress_indicator)
+        linearProgressIndicator.visibility = View.VISIBLE
+    }
+
+    fun hideProgressIndicator() {
+        linearProgressIndicator.visibility = View.GONE
     }
 
     //    override fun onRequestPermissionsResult(
