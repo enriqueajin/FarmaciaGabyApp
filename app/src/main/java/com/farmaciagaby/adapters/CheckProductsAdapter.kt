@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.farmaciagaby.databinding.SelectProductItemBinding
 import com.farmaciagaby.models.Product
 
-class CheckProductsAdapter(private val productList: ArrayList<Product>) :
+class CheckProductsAdapter(private val productList: MutableList<Product>) :
     RecyclerView.Adapter<CheckProductsAdapter.ViewHolder>() {
 
     private var checkedProductsList = arrayListOf<Product>()
@@ -56,7 +56,7 @@ class CheckProductsAdapter(private val productList: ArrayList<Product>) :
         val binding = itemView
 
         fun setData(product: Product) {
-            binding.tvProductName.text = product.name
+            binding.tvProductName.text = product.nombre
         }
     }
 }

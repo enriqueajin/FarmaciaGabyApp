@@ -74,7 +74,6 @@ class QuotationsHistoryFragment : Fragment() {
             val adapter = QuotationsHistoryAdapter(quotationsList)
             binding.rvQuotations.adapter = adapter
         })
-
 //        val quotation = Quotation("Bendición y Fé", "30/04/2022");
 //        val quotation2 = Quotation("Droguería La Esperanza", "03/03/2022");
 //        val quotation3 = Quotation("Promeco", "02/02/2022");
