@@ -10,7 +10,7 @@ class QuotationsViewModel: ViewModel() {
 //    lateinit var allQuotationsData: MutableLiveData<MutableList<Detalle>>
 //    val repo = QuotationsRepository
 
-    fun getAllQuotation(): MutableLiveData<MutableList<Detalle>>{
+    fun getAllQuotation(): MutableLiveData<MutableList<Detalle>> {
         val allQuotationsData = MutableLiveData<MutableList<Detalle>>()
         QuotationsRepository.getAllQuotation().observeForever {
             allQuotationsData.value = it
