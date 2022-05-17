@@ -14,6 +14,7 @@ import com.farmaciagaby.adapters.CheckProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
 import com.farmaciagaby.models.Product
 import com.farmaciagaby.viewmodels.ProductViewModel
+import com.farmaciagaby.viewmodels.ProductsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -25,6 +26,7 @@ class RequestQuotationFragment : Fragment() {
     private lateinit var adapter: CheckProductsAdapter
     private val gson = GsonBuilder().create()
     private val productViewModel: ProductViewModel by viewModels()
+    private val viewModel: ProductsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,33 +51,39 @@ class RequestQuotationFragment : Fragment() {
         // Set up the select quotation products adapter
         binding.rvQuotationProducts.layoutManager = LinearLayoutManager(context);
 
-        // Fake data
-        val productList = arrayListOf(
-            Product("Tabcin"),
-            Product("Pañal de adulto"),
-            Product("Jeringa"),
-            Product("Penicilina"),
-            Product("Amoxicilina"),
-            Product("Aspirina"),
-            Product("Agua oxigenada"),
-            Product("Alka Seltzer"),
-            Product("Crema humectante"),
-            Product("Agua Misclear"),
-            Product("Protector Solar"),
-            Product("Toallitas húmedas"),
-            Product("Talco de bebé"),
-            Product("Peptobismol"),
-            Product("Vicks"),
-            Product("Cofal"),
-            Product("Pastilla de teñir"),
-        )
+        // Get all products from Firestore
+        viewModel.getAllProducts().observe(requireActivity(), Observer { productsList ->
+            adapter = CheckProductsAdapter(productsList)
+            binding.rvQuotationProducts.adapter = adapter
+        })
 
-        adapter = CheckProductsAdapter(productList)
-        binding.rvQuotationProducts.adapter = adapter
+        // Fake data
+//        val productList = arrayListOf(
+//            Product("Tabcin"),
+//            Product("Pañal de adulto"),
+//            Product("Jeringa"),
+//            Product("Penicilina"),
+//            Product("Amoxicilina"),
+//            Product("Aspirina"),
+//            Product("Agua oxigenada"),
+//            Product("Alka Seltzer"),
+//            Product("Crema humectante"),
+//            Product("Agua Misclear"),
+//            Product("Protector Solar"),
+//            Product("Toallitas húmedas"),
+//            Product("Talco de bebé"),
+//            Product("Peptobismol"),
+//            Product("Vicks"),
+//            Product("Cofal"),
+//            Product("Pastilla de teñir"),
+//        )
+//
+//        adapter = CheckProductsAdapter(productList)
+//        binding.rvQuotationProducts.adapter = adapter
 
         binding.btnContinue.setOnClickListener { view ->
             for (product in adapter.getCheckedProducts()) {
-                Log.d("TAG", "producto: " + product.name)
+                Log.d("TAG", "producto: " + product.nombre)
             }
             Log.d("TAG", "--------------------------------------------")
 
@@ -114,7 +122,8 @@ class RequestQuotationFragment : Fragment() {
         button?.setOnClickListener {
             val product = Product(input?.text.toString().trim())
             adapter.addNewProduct(product)
-            addProductToDatabase(product.name.trim())
+            viewModel.addProduct(product)
+//            addProductToDatabase(product.name.trim())
             dialog.dismiss()
         }
     }

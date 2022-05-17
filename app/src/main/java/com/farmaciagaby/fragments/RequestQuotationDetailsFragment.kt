@@ -46,7 +46,7 @@ class RequestQuotationDetailsFragment : Fragment() {
         val productList = (gson.fromJson(args.productList, Array<Product>::class.java)).toList();
 
         for (product in productList) {
-            Log.d("TAG", "producto: ${product.name}")
+            Log.d("TAG", "producto: ${product.nombre}")
         }
 
         // Set up suppliers spinner data

@@ -45,7 +45,7 @@ class RequestQuotationPreviewFragment : BaseFragment() {
         actionBar?.title = resources.getString(R.string.action_bar_quotation_preview)
 
         val productList = (gson.fromJson(args.productList, Array<Product>::class.java)).toList()
-        val mappedProductList = productList.map { product -> product.name } as ArrayList<String>
+        val mappedProductList = productList.map { product -> product.nombre } as ArrayList<String>
 
         // Set up quotation preview adapter
         val layoutManager = LinearLayoutManager(context)

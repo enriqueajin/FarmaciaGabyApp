@@ -7,12 +7,12 @@ import com.farmaciagaby.repositories.QuotationsRepository
 
 class QuotationsViewModel: ViewModel() {
 
-    lateinit var allQuotationsData: MutableLiveData<MutableList<Detalle>>
-    val repo = QuotationsRepository
+//    lateinit var allQuotationsData: MutableLiveData<MutableList<Detalle>>
+//    val repo = QuotationsRepository
 
     fun getAllQuotation(): MutableLiveData<MutableList<Detalle>>{
         val allQuotationsData = MutableLiveData<MutableList<Detalle>>()
-        repo.getAllQuotation().observeForever {
+        QuotationsRepository.getAllQuotation().observeForever {
             allQuotationsData.value = it
         }
         return allQuotationsData
