@@ -18,6 +18,7 @@ import com.farmaciagaby.adapters.SimpleStringAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
 import com.farmaciagaby.models.Product
 import com.google.gson.GsonBuilder
+import java.text.SimpleDateFormat
 import java.util.*
 
 class RequestQuotationPreviewFragment : BaseFragment() {
@@ -46,6 +47,10 @@ class RequestQuotationPreviewFragment : BaseFragment() {
 
         val productList = (gson.fromJson(args.productList, Array<Product>::class.java)).toList()
         val mappedProductList = productList.map { product -> product.nombre } as ArrayList<String>
+
+        // set supplier and date
+        binding.tvSupplier.text = args.supplier
+        binding.tvDate.text = SimpleDateFormat("dd-MM-yyyy").format(Date())
 
         // Set up quotation preview adapter
         val layoutManager = LinearLayoutManager(context)

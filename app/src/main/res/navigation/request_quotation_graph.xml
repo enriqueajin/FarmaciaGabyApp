@@ -66,6 +66,16 @@
             android:defaultValue="String"
             app:argType="string" />
 
+        <argument
+            android:name="description"
+            android:defaultValue="String"
+            app:argType="string" />
+
+        <argument
+            android:name="supplier"
+            android:defaultValue="String"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_quotation_preview_to_successful_quotation"
             app:destination="@id/successfulRequestQuotationFragment"
