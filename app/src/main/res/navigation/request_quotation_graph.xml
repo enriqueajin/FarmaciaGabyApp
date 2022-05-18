@@ -53,6 +53,16 @@
             android:defaultValue="String"
             app:argType="string" />
 
+        <argument
+            android:name="quotation"
+            android:defaultValue="String"
+            app:argType="string" />
+
+        <argument
+            android:name="quotationId"
+            android:defaultValue="String"
+            app:argType="string" />
+
     </fragment>
 
     <fragment

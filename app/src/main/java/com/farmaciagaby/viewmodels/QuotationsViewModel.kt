@@ -17,4 +17,8 @@ class QuotationsViewModel: ViewModel() {
         }
         return allQuotationsData
     }
+
+    fun addQuotation(quotation: Detalle) {
+        QuotationsRepository.addQuotation(quotation)
+    }
 }

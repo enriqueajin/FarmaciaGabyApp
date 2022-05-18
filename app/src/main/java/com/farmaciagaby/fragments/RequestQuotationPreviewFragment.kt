@@ -10,13 +10,17 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.SimpleStringAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
+import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
+import com.farmaciagaby.viewmodels.QuotationsViewModel
+import com.google.firebase.Timestamp
 import com.google.gson.GsonBuilder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +30,7 @@ class RequestQuotationPreviewFragment : BaseFragment() {
     private lateinit var binding: FragmentRequestQuotationPreviewBinding
     private val gson = GsonBuilder().create()
     private val args: RequestQuotationPreviewFragmentArgs by navArgs()
+    private val viewModel: QuotationsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +71,23 @@ class RequestQuotationPreviewFragment : BaseFragment() {
         binding.btnContinue.setOnClickListener { view ->
             if (checkPermission()) {
                 Log.d("TAG", "permission already granted")
+
+                // Insert quotation in Firestore database
+                val description = args.description
+                val employee = "bQpg6tWvH9AJW6vp8OTl"
+                val date = Timestamp(Date())
+                val supplier = args.supplier
+
+                val quotation = Detalle(description, date, employee, supplier, mappedProductList)
+                val quotationId = viewModel.addQuotation(quotation)
+
+                // Save quotation as JPG image
                 val uri = saveImage(binding)
                 val action = uri?.let { stringUri ->
                     RequestQuotationPreviewFragmentDirections.actionQuotationPreviewToSuccessfulQuotation(
-                        stringUri
+                        stringUri,
+                        gson.toJson(quotation),
+                        quotationId.toString()
                     )
                 }
                 if (action != null) {
