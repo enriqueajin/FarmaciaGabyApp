@@ -28,4 +28,13 @@ object QuotationsRepository {
         }
         return quotations
     }
+
+    fun addQuotation(quotation: Detalle): String? {
+        val db = Firebase.firestore
+        var quotationId: String? = null
+        db.collection("cotizacion").add(quotation).addOnSuccessListener {
+            quotationId = it.id
+        }
+        return quotationId
+    }
 }
