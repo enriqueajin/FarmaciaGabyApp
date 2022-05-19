@@ -79,20 +79,25 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                 val supplier = args.supplier
 
                 val quotation = Detalle(description, date, employee, supplier, mappedProductList)
-                val quotationId = viewModel.addQuotation(quotation)
+                var quotationId: String?
 
                 // Save quotation as JPG image
                 val uri = saveImage(binding)
-                val action = uri?.let { stringUri ->
-                    RequestQuotationPreviewFragmentDirections.actionQuotationPreviewToSuccessfulQuotation(
-                        stringUri,
-                        gson.toJson(quotation),
-                        quotationId.toString()
-                    )
-                }
-                if (action != null) {
-                    Navigation.findNavController(view).navigate(action)
-                }
+
+                viewModel.addQuotation(quotation)
+                    .observe(requireActivity(), androidx.lifecycle.Observer { id ->
+                        quotationId = id
+                        Log.d("TAG", "id from view: ${quotationId}")
+
+                        val action =
+                            RequestQuotationPreviewFragmentDirections.actionQuotationPreviewToSuccessfulQuotation(
+                                uriString = uri!!,
+                                quotation = gson.toJson(quotation),
+                                quotationId = id
+                            )
+                        Navigation.findNavController(view).navigate(action)
+                    })
+
             } else {
                 Log.d("TAG", "Permission still not granted. requesting...")
                 requestPermission(true, activityResult)
@@ -100,18 +105,26 @@ class RequestQuotationPreviewFragment : BaseFragment() {
         }
     }
 
-    private val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback { result ->
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                Log.d("TAG", "storageActivityResultLauncher: manage extenal storage permission is granted")
-                if (result.resultCode == STORAGE_PERMISSION_CODE) {
-                    saveImage(binding)
+    private val activityResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ActivityResultCallback { result ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    Log.d(
+                        "TAG",
+                        "storageActivityResultLauncher: manage extenal storage permission is granted"
+                    )
+                    if (result.resultCode == STORAGE_PERMISSION_CODE) {
+                        saveImage(binding)
+                    }
+                } else {
+                    Log.d(
+                        "TAG",
+                        "storageActivityResultLauncher: manage extenal storage permission is denied"
+                    )
                 }
-            } else {
-                Log.d("TAG", "storageActivityResultLauncher: manage extenal storage permission is denied")
             }
-        }
-    })
+        })
 
 //
 //    override fun onRequestPermissionsResult(
