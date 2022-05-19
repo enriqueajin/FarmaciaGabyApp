@@ -1,5 +1,6 @@
 package com.farmaciagaby.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.farmaciagaby.models.Detalle
@@ -9,6 +10,7 @@ class QuotationsViewModel: ViewModel() {
 
 //    lateinit var allQuotationsData: MutableLiveData<MutableList<Detalle>>
 //    val repo = QuotationsRepository
+    lateinit var quotationIdData: MutableLiveData<String>
 
     fun getAllQuotation(): MutableLiveData<MutableList<Detalle>> {
         val allQuotationsData = MutableLiveData<MutableList<Detalle>>()
@@ -18,7 +20,12 @@ class QuotationsViewModel: ViewModel() {
         return allQuotationsData
     }
 
-    fun addQuotation(quotation: Detalle) {
-        QuotationsRepository.addQuotation(quotation)
+    fun addQuotation(quotation: Detalle): MutableLiveData<String> {
+        quotationIdData = MutableLiveData<String>()
+        QuotationsRepository.addQuotation(quotation).observeForever {
+            quotationIdData.value = it
+        }
+        Log.d("TAG", "id from viewmodel: ${quotationIdData.value}")
+        return quotationIdData
     }
 }

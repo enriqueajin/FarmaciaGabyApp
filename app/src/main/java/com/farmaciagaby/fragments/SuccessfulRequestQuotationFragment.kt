@@ -14,12 +14,16 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.FragmentSuccessfulRequestQuotationBinding
+import com.farmaciagaby.models.Detalle
+import com.google.gson.GsonBuilder
+import java.text.SimpleDateFormat
 
 class SuccessfulRequestQuotationFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSuccessfulRequestQuotationBinding
     private val args: SuccessfulRequestQuotationFragmentArgs by navArgs()
     private lateinit var uri: Uri
+    private val gson = GsonBuilder().create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,16 @@ class SuccessfulRequestQuotationFragment : BaseFragment() {
     private fun setData() {
         // Get arguments
         uri = Uri.parse(args.uriString)
+        val quotation = gson.fromJson(args.quotation, Detalle::class.java)
+        val quotationId = args.quotationId
+
+        val quotationDate = SimpleDateFormat("dd-MM-yyyy").format(quotation.fecha.toDate())
+        val quotationTime = SimpleDateFormat("HH:mm:ss").format(quotation.fecha.toDate())
+
+        // Set TextViews information
+        binding.tvTransactionNumber.text = quotationId
+        binding.tvDateValue.text = quotationDate
+        binding.tvTimeValue.text = quotationTime
 
         binding.btnShare.setOnClickListener { view ->
             if (checkPermission()) {

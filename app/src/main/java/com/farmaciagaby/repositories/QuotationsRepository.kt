@@ -1,5 +1,6 @@
 package com.farmaciagaby.repositories
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.farmaciagaby.models.Detalle
 import com.google.firebase.Timestamp
@@ -29,12 +30,14 @@ object QuotationsRepository {
         return quotations
     }
 
-    fun addQuotation(quotation: Detalle): String? {
+    fun addQuotation(quotation: Detalle): MutableLiveData<String> {
         val db = Firebase.firestore
-        var quotationId: String? = null
-        db.collection("cotizacion").add(quotation).addOnSuccessListener {
-            quotationId = it.id
+        val data = MutableLiveData<String>()
+        db.collection("cotizacion").add(quotation).addOnSuccessListener { docRef ->
+            Log.d("TAG", "addQuotation: ${docRef.id}")
+            data.value = docRef.id
         }
-        return quotationId
+        Log.d("TAG", "id from repository: ${data.value}")
+        return data
     }
 }
