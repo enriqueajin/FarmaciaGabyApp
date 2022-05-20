@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.farmaciagaby.databinding.SelectProductItemBinding
+import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
 
-class CheckProductsAdapter(private val productList: MutableList<Product>) :
+class CheckProductsAdapter(private var productList: MutableList<Product>) :
     RecyclerView.Adapter<CheckProductsAdapter.ViewHolder>() {
 
     private var checkedProductsList = arrayListOf<Product>()
@@ -49,6 +50,11 @@ class CheckProductsAdapter(private val productList: MutableList<Product>) :
         product.isChecked = true
         productList.add(product)
         notifyItemInserted(productList.size)
+    }
+
+    fun filterList(filteredList: MutableList<Product>) {
+        productList = filteredList
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: SelectProductItemBinding) : RecyclerView.ViewHolder(itemView.root) {

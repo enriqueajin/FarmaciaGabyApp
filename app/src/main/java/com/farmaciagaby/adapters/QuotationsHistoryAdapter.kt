@@ -11,7 +11,7 @@ import com.farmaciagaby.models.Quotation
 import java.text.SimpleDateFormat
 import java.util.*
 
-class QuotationsHistoryAdapter(private val quotationList: List<Detalle>) :
+class QuotationsHistoryAdapter(private var quotationList: List<Detalle>) :
     RecyclerView.Adapter<QuotationsHistoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

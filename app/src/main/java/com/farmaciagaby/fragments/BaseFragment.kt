@@ -1,7 +1,6 @@
 package com.farmaciagaby.fragments
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,6 +18,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -195,6 +196,24 @@ open class BaseFragment : Fragment() {
 
     fun hideProgressIndicator() {
         linearProgressIndicator.visibility = View.GONE
+    }
+
+    fun showKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, 0)
+    }
+
+    fun hideKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getActionBar(): ActionBar {
+        return (activity as AppCompatActivity).supportActionBar!!
+    }
+
+    fun setActionBarTitle(title: String) {
+        getActionBar().title = title
     }
 
     //    override fun onRequestPermissionsResult(
