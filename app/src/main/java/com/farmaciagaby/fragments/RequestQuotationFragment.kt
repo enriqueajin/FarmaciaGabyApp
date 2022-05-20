@@ -1,8 +1,12 @@
 package com.farmaciagaby.fragments
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.CheckProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
+import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
 import com.farmaciagaby.viewmodels.ProductViewModel
 import com.farmaciagaby.viewmodels.ProductsViewModel
@@ -19,14 +24,18 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
+import java.util.*
 
-class RequestQuotationFragment : Fragment() {
+class RequestQuotationFragment : BaseFragment() {
 
     private lateinit var binding: FragmentRequestQuotationBinding
     private lateinit var adapter: CheckProductsAdapter
     private val gson = GsonBuilder().create()
     private val productViewModel: ProductViewModel by viewModels()
     private val viewModel: ProductsViewModel by viewModels()
+
+    private var mProductList = mutableListOf<Product>()
+    private val mSearchList = mutableListOf<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +62,8 @@ class RequestQuotationFragment : Fragment() {
 
         // Get all products from Firestore
         viewModel.getAllProducts().observe(requireActivity(), Observer { productsList ->
-            adapter = CheckProductsAdapter(productsList)
+            mProductList = productsList
+            adapter = CheckProductsAdapter(mProductList)
             binding.rvQuotationProducts.adapter = adapter
         })
 
@@ -95,6 +105,45 @@ class RequestQuotationFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
+
+        val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(requireActivity().componentName))
+        searchView.queryHint = "Escriba el nombre del producto..."
+        searchView.setBackgroundColor(resources.getColor(R.color.white))
+        searchView.callOnClick()
+        searchView.performClick()
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Log.d("TAG", "onQueryTextChange: ${validate(p0!!)}")
+                filter(p0)
+                return false
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val filteredProducts = mutableListOf<Product>()
+
+        for (product in mProductList) {
+            val productName = product.nombre.lowercase(Locale.getDefault())
+            val text = text.lowercase(Locale.getDefault())
+
+            if (productName.contains(text)) {
+                filteredProducts.add(product)
+            }
+        }
+
+        if (filteredProducts.isNotEmpty()) {
+            adapter.filterList(filteredProducts)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -102,6 +151,9 @@ class RequestQuotationFragment : Fragment() {
             R.id.action_add_product -> {
                 showBottomDialog()
                 true
+            }
+            R.id.action_search -> {
+                false
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -113,7 +165,6 @@ class RequestQuotationFragment : Fragment() {
 
         dialog?.setContentView(view)
         dialog?.show()
-
 
         val input = dialog?.findViewById<TextInputEditText>(R.id.et_product_name)
         input?.requestFocus()
