@@ -2,13 +2,12 @@ package com.farmaciagaby.fragments
 
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.Animation
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.CheckProductsAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationBinding
-import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
 import com.farmaciagaby.viewmodels.ProductViewModel
 import com.farmaciagaby.viewmodels.ProductsViewModel
@@ -34,21 +32,21 @@ class RequestQuotationFragment : BaseFragment() {
     private val productViewModel: ProductViewModel by viewModels()
     private val viewModel: ProductsViewModel by viewModels()
 
+    private var isSearchViewOpen = false                        // The Flag that handle if SearchView is open
+    private lateinit var addItem: MenuItem                      // Get the add icon in action bar
+    private lateinit var searchItem: MenuItem                   // Get the search icon in action bar
+    private lateinit var searchView: SearchView                 // Set up a SearchView in search item action
+
     private var mProductList = mutableListOf<Product>()
-    private val mSearchList = mutableListOf<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRequestQuotationBinding.inflate(inflater, container, false)
         setData()
-
         return binding.root
     }
 
@@ -103,27 +101,67 @@ class RequestQuotationFragment : BaseFragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add_product -> {
+                showBottomDialog()
+                true
+            }
+            R.id.action_search -> {
+                // Set search view as opened and hide the add item icon from the action bar
+                isSearchViewOpen = true
+                addItem.isVisible = false
+
+                // Change action bar color to white when searching
+                getActionBar().setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.white)))
+
+                // Expand the SearchView just after the user click on the search item icon
+                searchItem.expandActionView()
+                searchView.requestFocus()
+                showKeyboard(searchView)
+                false
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.general_menu, menu)
 
-        val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        // Get menu items
+        addItem = menu.findItem(R.id.action_add_product)
+        searchItem = menu.findItem(R.id.action_search)
 
+        // Set up search functionality when user click on menu search item
+        val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = searchItem.actionView as SearchView
         searchView.setSearchableInfo(manager.getSearchableInfo(requireActivity().componentName))
-        searchView.queryHint = "Escriba el nombre del producto..."
+        searchView.queryHint = "Escriba el producto..."
         searchView.setBackgroundColor(resources.getColor(R.color.white))
-        searchView.callOnClick()
-        searchView.performClick()
+        searchView.onActionViewExpanded()
+
+        searchView.setOnQueryTextFocusChangeListener { view, isFocused ->
+            if (!isFocused) {
+                // Change action bar color to white when searching
+                getActionBar().setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.blue_primary)))
+
+                // Clear text in SearchView when it lose focus
+                searchView.setQuery("", false)
+
+                // Show the add item icon when SearchView lose focus and update elements in the RecyclerView
+                hideKeyboard(searchView)
+                addItem.isVisible = true
+                adapter.filterList(mProductList)
+            }
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-                Log.d("TAG", "onQueryTextChange: ${validate(p0!!)}")
-                filter(p0)
+            override fun onQueryTextChange(query: String?): Boolean {
+                filter(query!!)
                 return false
             }
         })
@@ -134,28 +172,15 @@ class RequestQuotationFragment : BaseFragment() {
 
         for (product in mProductList) {
             val productName = product.nombre.lowercase(Locale.getDefault())
-            val text = text.lowercase(Locale.getDefault())
+            val query = text.lowercase(Locale.getDefault())
 
-            if (productName.contains(text)) {
+            if (productName.contains(query)) {
                 filteredProducts.add(product)
             }
         }
 
         if (filteredProducts.isNotEmpty()) {
             adapter.filterList(filteredProducts)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_add_product -> {
-                showBottomDialog()
-                true
-            }
-            R.id.action_search -> {
-                false
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
