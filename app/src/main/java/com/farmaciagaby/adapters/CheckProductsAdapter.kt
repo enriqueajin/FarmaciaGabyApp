@@ -1,5 +1,6 @@
 package com.farmaciagaby.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,24 +19,24 @@ class CheckProductsAdapter(private var productList: MutableList<Product>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d("TAG", "onBindViewHolder: on bind")
         val product = productList[position]
         holder.setData(product)
         holder.binding.cbSelectProduct.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                product.isChecked = true
-                checkedProductsList.add(product)
+                if (!checkedProductsList.contains(product)) {
+                    checkedProductsList.add(product)
+                }
+
             } else {
-                product.isChecked = false
-                val myProduct = checkedProductsList.single { checkedProduct -> product == checkedProduct }
-                checkedProductsList.remove(myProduct)
+                if (checkedProductsList.contains(product)) {
+                    checkedProductsList.remove(product)
+                }
             }
         }
 
         // Mark as checked a product that was added
-        if (product.isChecked) {
-            holder.binding.cbSelectProduct.isChecked = true
-//            product.isChecked = false
-        }
+        updateRecycler(holder, product)
     }
 
     override fun getItemCount(): Int {
@@ -47,7 +48,7 @@ class CheckProductsAdapter(private var productList: MutableList<Product>) :
     }
 
     fun addNewProduct(product: Product) {
-        product.isChecked = true
+        checkedProductsList.add(product)
         productList.add(product)
         notifyItemInserted(productList.size)
     }
@@ -55,6 +56,10 @@ class CheckProductsAdapter(private var productList: MutableList<Product>) :
     fun filterList(filteredList: MutableList<Product>) {
         productList = filteredList
         notifyDataSetChanged()
+    }
+
+    fun updateRecycler(holder: ViewHolder, product: Product) {
+        holder.binding.cbSelectProduct.isChecked = checkedProductsList.contains(product)
     }
 
     class ViewHolder(itemView: SelectProductItemBinding) : RecyclerView.ViewHolder(itemView.root) {
