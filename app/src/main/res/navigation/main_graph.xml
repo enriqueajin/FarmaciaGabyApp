@@ -6,6 +6,7 @@
     app:startDestination="@id/quotationsHistoryFragment">
 
     <include app:graph="@navigation/request_quotation_graph" />
+    <include app:graph="@navigation/manage_products_graph" />
 
     <fragment
         android:id="@+id/quotationsHistoryFragment"
@@ -23,7 +24,19 @@
 
         <action
             android:id="@+id/action_main_to_login_activity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:destination="@id/loginActivity" />
+
+        <action
+            android:id="@+id/action_main_to_manage_products_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/manage_products_graph" />
 
     </fragment>
 
