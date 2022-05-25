@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_item_request_quotation -> navController.navigate(R.id.request_quotation_graph)
-            R.id.nav_item_manage_products -> Log.d("TAG", "pending manage products screen")
+            R.id.nav_item_manage_products -> navController.navigate(R.id.manage_products_graph)
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
