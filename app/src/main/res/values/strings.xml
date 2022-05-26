@@ -68,6 +68,8 @@
     <!--    Add Product Dialog -->
     <string name="add_product_dialog_title">Agregar producto</string>
     <string name="add_product_product_name_hint">Nombre del producto</string>
+    <string name="add_product_update_product">Actualizar producto</string>
+    <string name="add_product_type_product_advice">Por favor ingrese el nombre del producto.</string>
 
     <!--    Manage Products Screen -->
     <string name="manage_products_title">Listado de productos:</string>

@@ -34,6 +34,15 @@ class ManageProductsAdapter(
         return productList.size
     }
 
+    fun updateProduct(currentProduct: Product, newProductName: String) {
+        productList.forEachIndexed { index, item ->
+            if (item === currentProduct) {
+                productList[index].nombre = newProductName
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     class ViewHolder(itemView: ManageProductItemBinding) : RecyclerView.ViewHolder(itemView.root) {
 
         val binding = itemView
