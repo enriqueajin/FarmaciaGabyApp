@@ -43,6 +43,11 @@ class ManageProductsAdapter(
         }
     }
 
+    fun deleteProduct(product: Product) {
+        productList.remove(product)
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(itemView: ManageProductItemBinding) : RecyclerView.ViewHolder(itemView.root) {
 
         val binding = itemView

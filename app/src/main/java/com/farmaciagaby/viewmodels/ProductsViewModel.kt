@@ -34,4 +34,8 @@ class ProductsViewModel: ViewModel() {
     fun updateProduct(docRef: DocumentReference, newProductName: String) {
         ProductsRepository.updateProduct(docRef, newProductName)
     }
+
+    fun deleteProduct(docRef: DocumentReference) {
+        ProductsRepository.deleteProduct(docRef)
+    }
 }

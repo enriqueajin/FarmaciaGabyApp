@@ -2,7 +2,6 @@ package com.farmaciagaby.fragments
 
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.farmaciagaby.models.Product
 import com.farmaciagaby.viewmodels.ProductsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
 class ManageProductsFragment : BaseFragment() {
@@ -52,18 +51,34 @@ class ManageProductsFragment : BaseFragment() {
                 mProductList,
                 ManageProductsAdapter.OnClickListener({ product ->
                     run {
-                        Log.d("TAG", "setData: i'm deleting adapter with product $product")
+                        showDeleteDialog(product)
                     }
                 }) { product ->
                     run {
-                        showBottomDialog(product)
+                        showUpdateDialog(product)
                     }
                 })
             binding.rvManageProducts.adapter = mAdapter
         })
     }
 
-    private fun showBottomDialog(currentProduct: Product) {
+    private fun showDeleteDialog(product: Product) {
+        val dialog = MaterialAlertDialogBuilder(requireActivity())
+            .setTitle("Eliminar producto")
+            .setMessage("¿Está seguro que desea eliminar este producto?")
+            .setPositiveButton("Eliminar") { dialogInterface, i ->
+                viewModel.getProductDocumentReference(product.nombre)
+                    .observe(requireActivity(), Observer { documentReference ->
+                        viewModel.deleteProduct(documentReference)
+                    })
+
+                mAdapter.deleteProduct(product)
+            }
+            .setNegativeButton("Cancelar") { dialogInterface, i -> }
+            .show()
+    }
+
+    private fun showUpdateDialog(currentProduct: Product) {
         val dialog = context?.let { BottomSheetDialog(it, R.style.BottomSheetDialogTheme) }
         val view = layoutInflater.inflate(R.layout.add_product_dialog, null)
 
