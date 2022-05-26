@@ -1,11 +1,13 @@
 package com.farmaciagaby.fragments
 
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +16,12 @@ import com.farmaciagaby.adapters.ManageProductsAdapter
 import com.farmaciagaby.databinding.FragmentManageProductsBinding
 import com.farmaciagaby.models.Product
 import com.farmaciagaby.viewmodels.ProductsViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 
-class ManageProductsFragment : Fragment() {
+class ManageProductsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentManageProductsBinding
     private val viewModel: ProductsViewModel by viewModels()
@@ -50,10 +56,56 @@ class ManageProductsFragment : Fragment() {
                     }
                 }) { product ->
                     run {
-                        Log.d("TAG", "setData: i'm editing adapter with product $product")
+                        showBottomDialog(product)
                     }
                 })
             binding.rvManageProducts.adapter = mAdapter
         })
+    }
+
+    private fun showBottomDialog(currentProduct: Product) {
+        val dialog = context?.let { BottomSheetDialog(it, R.style.BottomSheetDialogTheme) }
+        val view = layoutInflater.inflate(R.layout.add_product_dialog, null)
+
+        dialog?.setContentView(view)
+        dialog?.show()
+
+        // Get layout components
+        val advice = dialog?.findViewById<TextView>(R.id.tv_advice_type_product)
+        val label = dialog?.findViewById<TextView>(R.id.tv_add_product)
+        val input = dialog?.findViewById<TextInputEditText>(R.id.et_product_name)
+        val button = dialog?.findViewById<MaterialButton>(R.id.btnAdd)
+
+        label?.text = resources.getString(R.string.add_product_update_product)
+        input?.text = Editable.Factory.getInstance().newEditable(currentProduct.nombre)
+        input?.requestFocus()
+
+        button?.setOnClickListener {
+            val newProductName = input?.text.toString()
+
+            if (validate(newProductName)) {
+                viewModel.getProductDocumentReference(currentProduct.nombre)
+                    .observe(requireActivity(), Observer { documentReference ->
+                        viewModel.updateProduct(documentReference, newProductName)
+                    })
+
+                // Update the product name in the RecyclerView
+                mAdapter.updateProduct(currentProduct, newProductName)
+
+                dialog.dismiss()
+            } else {
+                // Show the type product name TextView if input is empty
+                advice?.visibility = View.VISIBLE
+            }
+        }
+
+        // Hide the type product name TextView if input is not empty
+        input?.addTextChangedListener {
+            val newProductName = input.text.toString()
+
+            if (validate(newProductName)) {
+                advice?.visibility = View.GONE
+            }
+        }
     }
 }
