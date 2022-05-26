@@ -49,7 +49,11 @@ object ProductsRepository {
     }
 
     fun updateProduct(docRef: DocumentReference, newProductName: String) {
-        val db = Firebase.firestore
         docRef.update("nombre", newProductName)
     }
+
+    fun deleteProduct(docRef: DocumentReference) {
+        docRef.delete()
+    }
+
 }
