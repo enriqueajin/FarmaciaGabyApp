@@ -34,6 +34,16 @@ class ManageProductsAdapter(
         return productList.size
     }
 
+    fun filterList(filteredList: MutableList<Product>) {
+        productList = filteredList
+        notifyDataSetChanged()
+    }
+
+    fun addProduct(product: Product) {
+        productList.add(product)
+        notifyItemInserted(productList.size)
+    }
+
     fun updateProduct(currentProduct: Product, newProductName: String) {
         productList.forEachIndexed { index, item ->
             if (item === currentProduct) {

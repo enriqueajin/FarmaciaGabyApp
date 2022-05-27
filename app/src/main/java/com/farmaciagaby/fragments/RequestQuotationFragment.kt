@@ -197,9 +197,8 @@ class RequestQuotationFragment : BaseFragment() {
         val button = dialog?.findViewById<MaterialButton>(R.id.btnAdd)
         button?.setOnClickListener {
             val product = Product(input?.text.toString().trim())
-            adapter.addNewProduct(product)
+            adapter.addProduct(product)
             viewModel.addProduct(product)
-//            addProductToDatabase(product.name.trim())
             dialog.dismiss()
         }
     }

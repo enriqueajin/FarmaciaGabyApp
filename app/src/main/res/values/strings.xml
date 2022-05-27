@@ -5,6 +5,7 @@
     <string name="button_add">Agregar</string>
     <string name="button_finalize">Finalizar</string>
     <string name="button_share">Compartir</string>
+    <string name="button_update">Actualizar</string>
 
     <!--    Navigation Drawer -->
     <string name="navigation_drawer_open">Open</string>
