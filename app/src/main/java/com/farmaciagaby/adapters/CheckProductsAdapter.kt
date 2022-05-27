@@ -47,7 +47,7 @@ class CheckProductsAdapter(private var productList: MutableList<Product>) :
         return checkedProductsList
     }
 
-    fun addNewProduct(product: Product) {
+    fun addProduct(product: Product) {
         checkedProductsList.add(product)
         productList.add(product)
         notifyItemInserted(productList.size)
