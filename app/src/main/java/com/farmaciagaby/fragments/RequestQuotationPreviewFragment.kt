@@ -81,8 +81,14 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                 val quotation = Detalle(description, date, employee, supplier, mappedProductList)
                 var quotationId: String?
 
+                // Hide the button while take the screenshot
+                binding.btnContinue.visibility = View.GONE
+
                 // Save quotation as JPG image
-                val uri = saveImage(binding)
+                val uri = saveImage(binding.voucherContainer)
+
+                // Show button after take the screenshot
+                binding.btnContinue.visibility = View.VISIBLE
 
                 viewModel.addQuotation(quotation)
                     .observe(requireActivity(), androidx.lifecycle.Observer { id ->
@@ -115,7 +121,7 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                         "storageActivityResultLauncher: manage extenal storage permission is granted"
                     )
                     if (result.resultCode == STORAGE_PERMISSION_CODE) {
-                        saveImage(binding)
+                        saveImage(binding.voucherContainer)
                     }
                 } else {
                     Log.d(
@@ -124,7 +130,7 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                     )
                 }
             }
-        })
+    })
 
 //
 //    override fun onRequestPermissionsResult(

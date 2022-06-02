@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.farmaciagaby.models.Detalle
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,5 +40,31 @@ object QuotationsRepository {
         }
         Log.d("TAG", "id from repository: ${data.value}")
         return data
+    }
+
+    fun getQuotationDocumentReference(quotation: Detalle): MutableLiveData<DocumentReference?> {
+        Log.d("TAG", "Quotation: $quotation")
+        val db = Firebase.firestore
+        var id = ""
+        val docRef = MutableLiveData<DocumentReference?>()
+
+        db.collection("cotizacion")
+            .whereEqualTo("descripcion", quotation.descripcion)
+            .whereEqualTo("empleado", quotation.empleado)
+            .whereEqualTo("fecha", quotation.fecha)
+            .whereEqualTo("proveedor", quotation.proveedor)
+            .get()
+        .addOnSuccessListener { result ->
+            id = result.documents[0].id
+            docRef.value = db.collection("cotizacion").document(id)
+        }
+        .addOnFailureListener {
+            it.printStackTrace()
+        }
+        return docRef
+    }
+
+    fun deleteQuotation(documentReference: DocumentReference) {
+        documentReference.delete()
     }
 }
