@@ -38,10 +38,39 @@
             app:popExitAnim="@android:anim/slide_out_right"
             app:destination="@id/manage_products_graph" />
 
+        <action
+            android:id="@+id/action_main_to_quotation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/quotationDetailsFragment" />
+
     </fragment>
 
     <activity
         android:id="@+id/loginActivity"
         android:name="com.farmaciagaby.activities.LoginActivity" />
+
+    <fragment
+        android:id="@+id/quotationDetailsFragment"
+        android:name="com.farmaciagaby.fragments.QuotationDetailsFragment"
+        android:label="QuotationDetailsFragment"
+        tools:layout="@layout/fragment_quotation_details" >
+
+        <argument
+            android:name="quotation"
+            android:defaultValue="String"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_quotation_details_to_main"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:destination="@id/quotationsHistoryFragment" />
+
+    </fragment>
 
 </navigation>

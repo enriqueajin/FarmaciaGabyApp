@@ -12,18 +12,23 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.viewbinding.ViewBinding
 import com.farmaciagaby.R
+import com.farmaciagaby.databinding.FragmentQuotationDetailsBinding
 import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.io.File
@@ -95,21 +100,20 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun saveImage(binding: FragmentRequestQuotationPreviewBinding): String? {
+    fun saveImage(v: View): String? {
+        val view = v as ViewGroup
+
         try {
             checkForFolder()
 
             // Naming file with format 'Cotización 11-05-2022 12:15 PM'
             val fileName = "Cotización " + SimpleDateFormat("dd-MM-yyyy HH:mm:ss aaa").format(Calendar.getInstance().time)
 
-            // Hide 'Continue' button
-            binding.btnContinue.visibility = View.INVISIBLE
-
             val uri = MediaStore.Images.Media.insertImage(
                 requireActivity().contentResolver,
                 getBitmapFromView(
-                    binding.voucherContainer,
-                    binding.voucherContainer.getChildAt(0).height
+                    view,
+                    view.getChildAt(0).height
                 ),
                 fileName,
                 ""
@@ -121,17 +125,10 @@ open class BaseFragment : Fragment() {
                     Uri.parse(uri)
                 )
             )
-
-            // Show 'Continue' button
-            binding.btnContinue.visibility = View.VISIBLE
-
             return uri
 
         } catch (e: Exception) {
             e.printStackTrace()
-
-            // Show 'Continue' button
-            binding.btnContinue.visibility = View.VISIBLE
 
             return null
         }
