@@ -54,6 +54,8 @@ class RequestQuotationDetailsFragment : BaseFragment() {
             Log.d("TAG", "producto: ${product.nombre}")
         }
 
+        showLoadingDialog()
+
         // Get suppliers from Firestore
         viewModel.getAllSuppliers().observe(requireActivity(), Observer { supplierList ->
             val supplierNames = mutableListOf<String>()
@@ -63,19 +65,8 @@ class RequestQuotationDetailsFragment : BaseFragment() {
             val suppliersArray = supplierNames.toTypedArray()
             val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu_supplier_item, suppliersArray)
             binding.spinnerSuppliers.setAdapter(adapter)
+            hideLoadingDialog()
         })
-
-        // Set up suppliers spinner data
-//        val suppliers = arrayOf("Promeco", "Bendición y Fe", "Droguería La Esperanza", "Jogral")
-//        val adapter =
-//            ArrayAdapter(
-//                requireContext(),
-//                R.layout.dropdown_menu_supplier_item,
-//               suppliers
-//            )
-//
-//        binding.spinnerSuppliers.setAdapter(adapter)
-//        binding.spinnerSuppliers.requestFocus()
 
         binding.btnContinue.setOnClickListener { view ->
             val description = binding.etDescription.text.toString()

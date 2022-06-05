@@ -100,7 +100,10 @@ class QuotationDetailsFragment : BaseFragment() {
             .setTitle("Eliminar producto")
             .setMessage("¿Está seguro que desea eliminar este producto?")
             .setPositiveButton("Eliminar") { dialogInterface, i ->
+                showLoadingDialog()
                 viewModel.getQuotationDocumentReference(quotation).observe(requireActivity(), Observer { documentReference ->
+                    hideLoadingDialog()
+
                     // Perform the delete statement
                     viewModel.deleteQuotation(documentReference)
                     Navigation.findNavController(view).popBackStack()

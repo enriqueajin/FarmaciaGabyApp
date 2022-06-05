@@ -77,6 +77,9 @@
     <string name="manage_products_delete_ic_content_description">Icono de eliminar</string>
     <string name="manage_products_edit_ic_content_description">Icono de editar</string>
 
+    <!--    Loading Dialog -->
+    <string name="loading_dialog_content_description">Icono de carga</string>
+
     <string-array name="suppliers_array">
         <item>Bendición y Fe</item>
         <item>Jogral</item>

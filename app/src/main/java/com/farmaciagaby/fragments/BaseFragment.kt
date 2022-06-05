@@ -14,22 +14,16 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.viewbinding.ViewBinding
-import com.farmaciagaby.R
-import com.farmaciagaby.databinding.FragmentQuotationDetailsBinding
-import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
+import androidx.fragment.app.Fragment
+import com.farmaciagaby.utils.LoadingDialog
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.io.File
 import java.text.SimpleDateFormat
@@ -43,7 +37,7 @@ const val SHARE_FILES_PERMISSION_CODE = 200     // Request code for share files 
  */
 open class BaseFragment : Fragment() {
 
-    private lateinit var linearProgressIndicator: LinearProgressIndicator
+    private lateinit var loadingDialog: LoadingDialog
 
     fun requestPermission(isSave: Boolean, activityResultLauncher: ActivityResultLauncher<Intent>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -186,15 +180,6 @@ open class BaseFragment : Fragment() {
         return value.trim().isNotEmpty()
     }
 
-    fun showProgressIndicator() {
-        linearProgressIndicator = requireActivity().findViewById(R.id.linear_progress_indicator)
-        linearProgressIndicator.visibility = View.VISIBLE
-    }
-
-    fun hideProgressIndicator() {
-        linearProgressIndicator.visibility = View.GONE
-    }
-
     fun showKeyboard(view: View) {
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(view, 0)
@@ -211,6 +196,23 @@ open class BaseFragment : Fragment() {
 
     fun setActionBarTitle(title: String) {
         getActionBar().title = title
+    }
+
+    fun showLoadingDialog() {
+        loadingDialog = LoadingDialog()
+        loadingDialog.isCancelable = false
+        try {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            loadingDialog.show(transaction, LoadingDialog.TAG)
+            Log.d("TAG", "showLoadingDialog: showing")
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+            Log.d("TAG", "showLoadingDialog: error showing")
+        }
+    }
+
+    fun hideLoadingDialog() {
+        loadingDialog.dismiss()
     }
 
     //    override fun onRequestPermissionsResult(

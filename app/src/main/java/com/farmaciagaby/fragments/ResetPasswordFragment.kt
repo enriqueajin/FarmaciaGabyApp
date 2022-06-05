@@ -41,7 +41,6 @@ class ResetPasswordFragment : BaseFragment() {
             val email = binding.etEmail.text.toString().trim()
 
             if (validateEmail(email)) {
-                showProgressIndicator()
                 sendResetPasswordEmail(email)
             } else {
                 Snackbar.make(
@@ -86,7 +85,6 @@ class ResetPasswordFragment : BaseFragment() {
                 } else {
                     showResetPasswordAlert(R.string.reset_password_email_sent_failed, false)
                 }
-                hideProgressIndicator()
             })
     }
 }

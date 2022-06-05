@@ -18,7 +18,7 @@ import com.farmaciagaby.viewmodels.QuotationsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 
-class QuotationsHistoryFragment : Fragment() {
+class QuotationsHistoryFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuotationsHistoryBinding
     private val gson = GsonBuilder().create()
@@ -62,8 +62,11 @@ class QuotationsHistoryFragment : Fragment() {
         // Set up quotations history adapter
         binding.rvQuotations.layoutManager = LinearLayoutManager(context);
 
+        showLoadingDialog()
+
         // Get products from Firestore
         viewModel.getAllQuotation().observe(requireActivity(), Observer { quotationsList ->
+            hideLoadingDialog()
             mQuotationList = quotationsList
             mAdapter = QuotationsHistoryAdapter(mQuotationList, QuotationsHistoryAdapter.OnClickListener { quotation, view ->
                 val arg = gson.toJson(quotation)

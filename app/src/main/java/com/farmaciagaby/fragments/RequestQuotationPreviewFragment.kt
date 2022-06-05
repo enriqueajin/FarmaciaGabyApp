@@ -90,8 +90,11 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                 // Show button after take the screenshot
                 binding.btnContinue.visibility = View.VISIBLE
 
+                showLoadingDialog()
+
                 viewModel.addQuotation(quotation)
                     .observe(requireActivity(), androidx.lifecycle.Observer { id ->
+                        hideLoadingDialog()
                         quotationId = id
                         Log.d("TAG", "id from view: ${quotationId}")
 
