@@ -54,24 +54,25 @@ class LoginFragment : BaseFragment() {
             val auth = FirebaseHelper.getAuthentication()
 
             if (validateEmail(email) && validate(password)) {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(requireActivity()) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success
-                            Log.d("TAG", "signInWithEmail:success")
-                            val user = auth.currentUser
-                            Navigation.findNavController(view).navigate(R.id.action_login_to_main_activity)
-                            requireActivity().finish()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInWithEmail:failure", task.exception)
-                            Snackbar.make(
-                                binding.fragmentLoginContainer,
-                                "Correo electrónico y/o contraseña incorrecto.",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
+                showLoadingDialog()
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity()) { task ->
+                    hideLoadingDialog()
+                    if (task.isSuccessful) {
+                        // Sign in success
+                        Log.d("TAG", "signInWithEmail:success")
+                        val user = auth.currentUser
+                        Navigation.findNavController(view).navigate(R.id.action_login_to_main_activity)
+                        requireActivity().finish()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("TAG", "signInWithEmail:failure", task.exception)
+                        Snackbar.make(
+                            binding.fragmentLoginContainer,
+                            "Correo electrónico y/o contraseña incorrecto.",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
+                }
             } else {
                 Snackbar.make(
                     binding.fragmentLoginContainer,

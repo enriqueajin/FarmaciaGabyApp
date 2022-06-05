@@ -20,6 +20,7 @@ import com.farmaciagaby.viewmodels.ProductViewModel
 import com.farmaciagaby.viewmodels.ProductsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
 import java.util.*
@@ -58,46 +59,34 @@ class RequestQuotationFragment : BaseFragment() {
         // Set up the select quotation products adapter
         binding.rvQuotationProducts.layoutManager = LinearLayoutManager(context);
 
+        showLoadingDialog()
+
         // Get all products from Firestore
         viewModel.getAllProducts().observe(requireActivity(), Observer { productsList ->
             mProductList = productsList
             adapter = CheckProductsAdapter(mProductList)
             binding.rvQuotationProducts.adapter = adapter
+            hideLoadingDialog()
         })
 
-        // Fake data
-//        val productList = arrayListOf(
-//            Product("Tabcin"),
-//            Product("Pañal de adulto"),
-//            Product("Jeringa"),
-//            Product("Penicilina"),
-//            Product("Amoxicilina"),
-//            Product("Aspirina"),
-//            Product("Agua oxigenada"),
-//            Product("Alka Seltzer"),
-//            Product("Crema humectante"),
-//            Product("Agua Misclear"),
-//            Product("Protector Solar"),
-//            Product("Toallitas húmedas"),
-//            Product("Talco de bebé"),
-//            Product("Peptobismol"),
-//            Product("Vicks"),
-//            Product("Cofal"),
-//            Product("Pastilla de teñir"),
-//        )
-//
-//        adapter = CheckProductsAdapter(productList)
-//        binding.rvQuotationProducts.adapter = adapter
-
         binding.btnContinue.setOnClickListener { view ->
-            for (product in adapter.getCheckedProducts()) {
-                Log.d("TAG", "producto: " + product.nombre)
-            }
-            Log.d("TAG", "--------------------------------------------")
+            // Validate that checked products list is not empty
+            if (adapter.getCheckedProducts().isNotEmpty()) {
+                for (product in adapter.getCheckedProducts()) {
+                    Log.d("TAG", "producto: " + product.nombre)
+                }
+                Log.d("TAG", "--------------------------------------------")
 
-            val argument = gson.toJson(adapter.getCheckedProducts())
-            val action = RequestQuotationFragmentDirections.actionPassProductListToRequestQuotationDetails(argument)
-            Navigation.findNavController(view).navigate(action)
+                val argument = gson.toJson(adapter.getCheckedProducts())
+                val action = RequestQuotationFragmentDirections.actionPassProductListToRequestQuotationDetails(argument)
+                Navigation.findNavController(view).navigate(action)
+            } else {
+                Snackbar.make(
+                    binding.requestQuotationContainer,
+                    "Debe seleccionar al menos un producto para continuar",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -198,7 +187,11 @@ class RequestQuotationFragment : BaseFragment() {
         button?.setOnClickListener {
             val product = Product(input?.text.toString().trim())
             adapter.addProduct(product)
+
+            showLoadingDialog()
             viewModel.addProduct(product)
+            hideLoadingDialog()
+
             dialog.dismiss()
         }
     }

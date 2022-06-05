@@ -53,6 +53,8 @@ class ManageProductsFragment : BaseFragment() {
         // Set up the manage products adapter
         binding.rvManageProducts.layoutManager = LinearLayoutManager(context)
 
+        showLoadingDialog()
+
         // Get all products from Firestore
         viewModel.getAllProducts().observe(requireActivity(), Observer { productList ->
             mProductList = productList
@@ -68,6 +70,7 @@ class ManageProductsFragment : BaseFragment() {
                     }
                 })
             binding.rvManageProducts.adapter = mAdapter
+            hideLoadingDialog()
         })
     }
 
@@ -76,9 +79,11 @@ class ManageProductsFragment : BaseFragment() {
             .setTitle("Eliminar producto")
             .setMessage("¿Está seguro que desea eliminar este producto?")
             .setPositiveButton("Eliminar") { dialogInterface, i ->
+                showLoadingDialog()
                 viewModel.getProductDocumentReference(product.nombre)
                     .observe(requireActivity(), Observer { documentReference ->
                         viewModel.deleteProduct(documentReference)
+                        hideLoadingDialog()
                     })
 
                 mProductList.remove(product)
@@ -110,9 +115,11 @@ class ManageProductsFragment : BaseFragment() {
             val newProductName = input?.text.toString()
 
             if (validate(newProductName)) {
+                showLoadingDialog()
                 viewModel.getProductDocumentReference(currentProduct.nombre)
                     .observe(requireActivity(), Observer { documentReference ->
                         viewModel.updateProduct(documentReference, newProductName)
+                        hideLoadingDialog()
                     })
 
                 // Update the product name in the RecyclerView
@@ -233,7 +240,11 @@ class ManageProductsFragment : BaseFragment() {
         button?.setOnClickListener {
             val product = Product(input?.text.toString().trim())
             mAdapter.addProduct(product)
+
+            showLoadingDialog()
             viewModel.addProduct(product)
+            hideLoadingDialog()
+
             dialog.dismiss()
         }
     }
