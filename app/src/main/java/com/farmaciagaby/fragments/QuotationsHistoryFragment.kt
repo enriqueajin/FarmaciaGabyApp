@@ -1,6 +1,8 @@
 package com.farmaciagaby.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -50,6 +52,18 @@ class QuotationsHistoryFragment : BaseFragment() {
     }
 
     private fun setData() {
+        // Get user uid
+        val sharedPref = activity?.getSharedPreferences(
+            resources.getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        val userUid = sharedPref?.getString(
+            getString(R.string.uid_key),
+            "uid"
+        )
+
+        Log.d("TAG", "user uid from main is: $userUid")
+
         // Show action bar and set title
         val actionBar = (activity as AppCompatActivity).supportActionBar
         actionBar?.title = resources.getString(R.string.action_bar_quotation_history)

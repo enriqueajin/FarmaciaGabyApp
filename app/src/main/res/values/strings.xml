@@ -80,6 +80,10 @@
     <!--    Loading Dialog -->
     <string name="loading_dialog_content_description">Icono de carga</string>
 
+    <!--    Shared Preferences -->
+    <string name="preference_file_key">Icono de carga</string>
+    <string name="uid_key">uui</string>
+
     <string-array name="suppliers_array">
         <item>Bendición y Fe</item>
         <item>Jogral</item>
