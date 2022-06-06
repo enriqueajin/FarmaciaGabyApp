@@ -10,6 +10,7 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
@@ -23,6 +24,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RequestQuotationFragment : BaseFragment() {
@@ -61,13 +63,17 @@ class RequestQuotationFragment : BaseFragment() {
 
         showLoadingDialog()
 
-        // Get all products from Firestore
-        viewModel.getAllProducts().observe(requireActivity(), Observer { productsList ->
-            mProductList = productsList
-            adapter = CheckProductsAdapter(mProductList)
-            binding.rvQuotationProducts.adapter = adapter
-            hideLoadingDialog()
-        })
+        // Get all products from Firestore using coroutines
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewModel.getAllProducts()
+            viewModel.productsData.observe(requireActivity()) { productsList ->
+                mProductList = productsList
+                adapter = CheckProductsAdapter(mProductList)
+                binding.rvQuotationProducts.adapter = adapter
+                hideLoadingDialog()
+            }
+        }
 
         binding.btnContinue.setOnClickListener { view ->
             // Validate that checked products list is not empty

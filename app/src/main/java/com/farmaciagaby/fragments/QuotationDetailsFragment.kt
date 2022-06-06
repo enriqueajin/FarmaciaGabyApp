@@ -11,17 +11,17 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.farmaciagaby.R
 import com.farmaciagaby.adapters.SimpleStringAdapter
 import com.farmaciagaby.databinding.FragmentQuotationDetailsBinding
 import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.viewmodels.QuotationsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class QuotationDetailsFragment : BaseFragment() {
@@ -101,13 +101,18 @@ class QuotationDetailsFragment : BaseFragment() {
             .setMessage("¿Está seguro que desea eliminar este producto?")
             .setPositiveButton("Eliminar") { dialogInterface, i ->
                 showLoadingDialog()
-                viewModel.getQuotationDocumentReference(quotation).observe(requireActivity(), Observer { documentReference ->
-                    hideLoadingDialog()
 
-                    // Perform the delete statement
-                    viewModel.deleteQuotation(documentReference)
-                    Navigation.findNavController(view).popBackStack()
-                })
+                viewLifecycleOwner.lifecycleScope.launch {
+
+                    viewModel.getQuotationDocumentReference(quotation)
+                    viewModel.quotationDocRef.observe(requireActivity()) { documentReference ->
+                        hideLoadingDialog()
+
+                        // Perform the delete statement
+                        viewModel.deleteQuotation(documentReference)
+                        Navigation.findNavController(view).popBackStack()
+                    }
+                }
             }
             .setNegativeButton("Cancelar") { dialogInterface, i -> }
             .show()

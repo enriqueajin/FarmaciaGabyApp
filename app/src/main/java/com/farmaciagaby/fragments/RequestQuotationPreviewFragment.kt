@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,9 +21,12 @@ import com.farmaciagaby.adapters.SimpleStringAdapter
 import com.farmaciagaby.databinding.FragmentRequestQuotationPreviewBinding
 import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
+import com.farmaciagaby.viewmodels.EmployeesViewModel
 import com.farmaciagaby.viewmodels.QuotationsViewModel
 import com.google.firebase.Timestamp
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +35,8 @@ class RequestQuotationPreviewFragment : BaseFragment() {
     private lateinit var binding: FragmentRequestQuotationPreviewBinding
     private val gson = GsonBuilder().create()
     private val args: RequestQuotationPreviewFragmentArgs by navArgs()
-    private val viewModel: QuotationsViewModel by viewModels()
+    private val quotationsViewModel: QuotationsViewModel by viewModels()
+    private val employeesViewModel: EmployeesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,39 +87,49 @@ class RequestQuotationPreviewFragment : BaseFragment() {
                 )
                 Log.d("TAG", "user uid from preview: $userUid")
 
-                // Insert quotation in Firestore database
-                val description = args.description
-                val date = Timestamp(Date())
-                val supplier = args.supplier
-
-                val quotation = Detalle(description, date, userUid!!, supplier, mappedProductList)
-                var quotationId: String?
-
-                // Hide the button while take the screenshot
-                binding.btnContinue.visibility = View.GONE
-
-                // Save quotation as JPG image
-                val uri = saveImage(binding.voucherContainer)
-
-                // Show button after take the screenshot
-                binding.btnContinue.visibility = View.VISIBLE
-
                 showLoadingDialog()
 
-                viewModel.addQuotation(quotation)
-                    .observe(requireActivity(), androidx.lifecycle.Observer { id ->
-                        hideLoadingDialog()
-                        quotationId = id
-                        Log.d("TAG", "id from view: ${quotationId}")
+                viewLifecycleOwner.lifecycleScope.launch {
 
-                        val action =
-                            RequestQuotationPreviewFragmentDirections.actionQuotationPreviewToSuccessfulQuotation(
-                                uriString = uri!!,
-                                quotation = gson.toJson(quotation),
-                                quotationId = id
-                            )
-                        Navigation.findNavController(view).navigate(action)
-                    })
+                    // Insert quotation in Firestore database
+                    val description = args.description
+                    val date = Timestamp(Date())
+                    val supplier = args.supplier
+
+                    // Get user (employee) by uid using coroutines}
+                    employeesViewModel.getEmployeeByUid(userUid)
+                    employeesViewModel.employeeData.observe(requireActivity()) { employeeResponse ->
+                        val employeeId = employeeResponse.employeeId
+
+                        val quotation = Detalle(description, date, employeeId, supplier, mappedProductList)
+                        var quotationId: String?
+
+                        // Hide the button while take the screenshot
+                        binding.btnContinue.visibility = View.GONE
+
+                        // Save quotation as JPG image
+                        val uri = saveImage(binding.voucherContainer)
+
+                        // Show button after take the screenshot
+                        binding.btnContinue.visibility = View.VISIBLE
+
+                        // Add quotation using coroutines
+                        quotationsViewModel.addQuotation(quotation)
+                        quotationsViewModel.quotationIdData.observe(requireActivity()) { id ->
+                            hideLoadingDialog()
+                            quotationId = id
+                            Log.d("TAG", "id from view: ${quotationId}")
+
+                            val action =
+                                RequestQuotationPreviewFragmentDirections.actionQuotationPreviewToSuccessfulQuotation(
+                                    uriString = uri!!,
+                                    quotation = gson.toJson(quotation),
+                                    quotationId = id
+                                )
+                            Navigation.findNavController(view).navigate(action)
+                        }
+                    }
+                }
 
             } else {
                 Log.d("TAG", "Permission still not granted. requesting...")

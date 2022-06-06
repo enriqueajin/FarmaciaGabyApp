@@ -3,43 +3,52 @@ package com.farmaciagaby.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.repositories.QuotationsRepository
 import com.google.firebase.firestore.DocumentReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class QuotationsViewModel: ViewModel() {
 
-    lateinit var quotationIdData: MutableLiveData<String>
-    lateinit var quotationDocRef: MutableLiveData<DocumentReference>
-    lateinit var allQuotationsData: MutableLiveData<MutableList<Detalle>>
+    var quotationIdData = MutableLiveData<String>()
+    var quotationDocRef = MutableLiveData<DocumentReference>()
+    var allQuotationsData = MutableLiveData<MutableList<Detalle>>()
 
-    fun getAllQuotation(): MutableLiveData<MutableList<Detalle>> {
-        allQuotationsData = MutableLiveData<MutableList<Detalle>>()
-        QuotationsRepository.getAllQuotation().observeForever {
-            allQuotationsData.value = it
+    fun getAllQuotation() {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = QuotationsRepository.getAllQuotation()
+            Log.d("TAG", "getAllQuotation: observing result from view model")
+
+            if (!result.isNullOrEmpty()) {
+                allQuotationsData.postValue(result)
+            }
         }
-        return allQuotationsData
     }
 
-    fun addQuotation(quotation: Detalle): MutableLiveData<String> {
-        quotationIdData = MutableLiveData<String>()
-        QuotationsRepository.addQuotation(quotation).observeForever {
-            quotationIdData.value = it
+    fun addQuotation(quotation: Detalle) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val result = QuotationsRepository.addQuotation(quotation)
+            quotationIdData.postValue(result)
+            Log.d("TAG", "id from viewmodel: ${quotationIdData.value}")
         }
-        Log.d("TAG", "id from viewmodel: ${quotationIdData.value}")
-        return quotationIdData
     }
 
-    fun getQuotationDocumentReference(quotation: Detalle): MutableLiveData<DocumentReference> {
-        quotationDocRef = MutableLiveData<DocumentReference>()
-        QuotationsRepository.getQuotationDocumentReference(quotation).observeForever {
-            quotationDocRef.value = it
+    fun getQuotationDocumentReference(quotation: Detalle) {
+        viewModelScope.launch(Dispatchers.Main) {
+           val result =  QuotationsRepository.getQuotationDocumentReference(quotation)
+
+            if (result != null) {
+                quotationDocRef.postValue(result!!)
+            }
         }
-        return quotationDocRef
     }
 
     fun deleteQuotation(docRef: DocumentReference) {
-        QuotationsRepository.deleteQuotation(docRef)
+        viewModelScope.launch(Dispatchers.Main) {
+            QuotationsRepository.deleteQuotation(docRef)
+        }
     }
 
 }
