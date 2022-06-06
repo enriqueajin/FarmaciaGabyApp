@@ -1,5 +1,6 @@
 package com.farmaciagaby.fragments
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -71,14 +72,22 @@ class RequestQuotationPreviewFragment : BaseFragment() {
         binding.btnContinue.setOnClickListener { view ->
             if (checkPermission()) {
                 Log.d("TAG", "permission already granted")
+                val sharedPref = activity?.getSharedPreferences(
+                    resources.getString(R.string.preference_file_key),
+                    Context.MODE_PRIVATE
+                )
+                val userUid = sharedPref?.getString(
+                    getString(R.string.uid_key),
+                    "uid"
+                )
+                Log.d("TAG", "user uid from preview: $userUid")
 
                 // Insert quotation in Firestore database
                 val description = args.description
-                val employee = "bQpg6tWvH9AJW6vp8OTl"
                 val date = Timestamp(Date())
                 val supplier = args.supplier
 
-                val quotation = Detalle(description, date, employee, supplier, mappedProductList)
+                val quotation = Detalle(description, date, userUid!!, supplier, mappedProductList)
                 var quotationId: String?
 
                 // Hide the button while take the screenshot

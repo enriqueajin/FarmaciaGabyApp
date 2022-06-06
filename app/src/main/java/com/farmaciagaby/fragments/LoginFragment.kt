@@ -1,5 +1,6 @@
 package com.farmaciagaby.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,14 +10,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.navigation.Navigation
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.FragmentLoginBinding
-import com.farmaciagaby.models.Detalle
-import com.farmaciagaby.models.QuotationDetail
 import com.farmaciagaby.network.FirebaseHelper
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import java.util.*
 
 class LoginFragment : BaseFragment() {
 
@@ -55,14 +50,27 @@ class LoginFragment : BaseFragment() {
 
             if (validateEmail(email) && validate(password)) {
                 showLoadingDialog()
+
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(requireActivity()) { task ->
                     hideLoadingDialog()
                     if (task.isSuccessful) {
-                        // Sign in success
+                        // Sign in successful
                         Log.d("TAG", "signInWithEmail:success")
                         val user = auth.currentUser
+
+                        // Store user uid in Shared Preferences
+                        val sharedPref = activity?.getSharedPreferences(
+                            resources.getString(R.string.preference_file_key),
+                            Context.MODE_PRIVATE
+                        )
+                        with (sharedPref?.edit()) {
+                            this?.putString(getString(R.string.uid_key), user?.uid)
+                            this?.apply()
+                        }
+
                         Navigation.findNavController(view).navigate(R.id.action_login_to_main_activity)
                         requireActivity().finish()
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("TAG", "signInWithEmail:failure", task.exception)
