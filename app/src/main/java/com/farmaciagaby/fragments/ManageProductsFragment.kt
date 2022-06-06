@@ -10,7 +10,7 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
 import com.farmaciagaby.adapters.ManageProductsAdapter
@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
 import java.util.*
 
 class ManageProductsFragment : BaseFragment() {
@@ -55,23 +56,27 @@ class ManageProductsFragment : BaseFragment() {
 
         showLoadingDialog()
 
-        // Get all products from Firestore
-        viewModel.getAllProducts().observe(requireActivity(), Observer { productList ->
-            mProductList = productList
-            mAdapter = ManageProductsAdapter(
-                mProductList,
-                ManageProductsAdapter.OnClickListener({ product ->
-                    run {
-                        showDeleteDialog(product)
-                    }
-                }) { product ->
-                    run {
-                        showUpdateDialog(product)
-                    }
-                })
-            binding.rvManageProducts.adapter = mAdapter
-            hideLoadingDialog()
-        })
+        // Get all products from Firestore using coroutines
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewModel.getAllProducts()
+            viewModel.productsData.observe(requireActivity()) { productList ->
+                mProductList = productList
+                mAdapter = ManageProductsAdapter(
+                    mProductList,
+                    ManageProductsAdapter.OnClickListener({ product ->
+                        run {
+                            showDeleteDialog(product)
+                        }
+                    }) { product ->
+                        run {
+                            showUpdateDialog(product)
+                        }
+                    })
+                binding.rvManageProducts.adapter = mAdapter
+                hideLoadingDialog()
+            }
+        }
     }
 
     private fun showDeleteDialog(product: Product) {
@@ -80,11 +85,15 @@ class ManageProductsFragment : BaseFragment() {
             .setMessage("¿Está seguro que desea eliminar este producto?")
             .setPositiveButton("Eliminar") { dialogInterface, i ->
                 showLoadingDialog()
-                viewModel.getProductDocumentReference(product.nombre)
-                    .observe(requireActivity(), Observer { documentReference ->
+
+                // Delete product using coroutines
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.getProductDocumentReference(product.nombre)
+                    viewModel.productDocRef.observe(requireActivity()) { documentReference ->
                         viewModel.deleteProduct(documentReference)
                         hideLoadingDialog()
-                    })
+                    }
+                }
 
                 mProductList.remove(product)
                 mAdapter.deleteProduct(product)
@@ -116,16 +125,22 @@ class ManageProductsFragment : BaseFragment() {
 
             if (validate(newProductName)) {
                 showLoadingDialog()
-                viewModel.getProductDocumentReference(currentProduct.nombre)
-                    .observe(requireActivity(), Observer { documentReference ->
+
+                // Update product using coroutines
+                viewLifecycleOwner.lifecycleScope.launch {
+
+                    viewModel.getProductDocumentReference(currentProduct.nombre)
+                    viewModel.productDocRef.observe(requireActivity()) { documentReference ->
                         viewModel.updateProduct(documentReference, newProductName)
                         hideLoadingDialog()
-                    })
+                    }
+                }
 
                 // Update the product name in the RecyclerView
                 mAdapter.updateProduct(currentProduct, newProductName)
 
                 dialog.dismiss()
+
             } else {
                 // Show the type product name TextView if input is empty
                 advice?.visibility = View.VISIBLE

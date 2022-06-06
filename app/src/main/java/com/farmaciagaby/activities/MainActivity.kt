@@ -1,13 +1,16 @@
 package com.farmaciagaby.activities
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,8 +20,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.farmaciagaby.R
 import com.farmaciagaby.databinding.ActivityMainBinding
 import com.farmaciagaby.network.FirebaseHelper
+import com.farmaciagaby.viewmodels.EmployeesViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +37,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var binding: ActivityMainBinding;
+    private val gson = GsonBuilder().create()
+    private val employeesViewModel: EmployeesViewModel by viewModels()
+    private val context = this
 
     override fun onStart() {
         super.onStart()
@@ -76,8 +85,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setupWithNavController(navController)
         navigationView.setNavigationItemSelectedListener(this)
 
-        // Set navigation drawer user name
-        navigationView.getHeaderView(0).findViewById<TextView>(R.id.tv_nav_header).text = "Bienvenido, Enrique Ajin"
+        // Get user uid from Shared Preferences
+        val sharedPref = getSharedPreferences(
+            resources.getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        val userUid = sharedPref?.getString(
+            getString(R.string.uid_key),
+            "uid"
+        )
+
+        lifecycleScope.launch {
+
+            // Get user logged
+            employeesViewModel.getEmployeeByUid(userUid)
+            employeesViewModel.employeeData.observe(context) { employeeResponse ->
+                Log.d("TAG", "observing employee from activity : $employeeResponse")
+
+                // Set navigation drawer user name
+                navigationView.getHeaderView(0).findViewById<TextView>(R.id.tv_nav_header).text = "Bienvenido(a), ${employeeResponse.employee.primer_nombre} ${employeeResponse.employee.primer_apellido}"
+            }
+        }
 
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         val toolbar : Toolbar = findViewById(R.id.toolbar_main)

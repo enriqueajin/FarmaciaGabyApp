@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.farmaciagaby.R
@@ -19,12 +18,13 @@ import com.farmaciagaby.network.FirebaseHelper
 import com.farmaciagaby.viewmodels.QuotationsViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 
 class QuotationsHistoryFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuotationsHistoryBinding
     private val gson = GsonBuilder().create()
-    private val viewModel: QuotationsViewModel by viewModels()
+    private val quotationsViewModel: QuotationsViewModel by viewModels()
     private lateinit var mAdapter: QuotationsHistoryAdapter
     private var mQuotationList = mutableListOf<Detalle>()
 
@@ -78,17 +78,22 @@ class QuotationsHistoryFragment : BaseFragment() {
 
         showLoadingDialog()
 
-        // Get products from Firestore
-        viewModel.getAllQuotation().observe(requireActivity(), Observer { quotationsList ->
-            hideLoadingDialog()
-            mQuotationList = quotationsList
-            mAdapter = QuotationsHistoryAdapter(mQuotationList, QuotationsHistoryAdapter.OnClickListener { quotation, view ->
-                val arg = gson.toJson(quotation)
-                val action = QuotationsHistoryFragmentDirections.actionMainToQuotationDetails(arg)
-                Navigation.findNavController(view).navigate(action)
-            })
-            binding.rvQuotations.adapter = mAdapter
-        })
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            // Get products from Firestore
+            quotationsViewModel.getAllQuotation()
+            quotationsViewModel.allQuotationsData.observe(requireActivity()) { quotationsList ->
+                Log.d("TAG", "setData: observing with coroutines $quotationsList")
+                mQuotationList = quotationsList
+                mAdapter = QuotationsHistoryAdapter(mQuotationList, QuotationsHistoryAdapter.OnClickListener { quotation, view ->
+                    val arg = gson.toJson(quotation)
+                    val action = QuotationsHistoryFragmentDirections.actionMainToQuotationDetails(arg)
+                    Navigation.findNavController(view).navigate(action)
+                })
+                binding.rvQuotations.adapter = mAdapter
+                hideLoadingDialog()
+            }
+        }
 
         binding.fabNewQuotation.setOnClickListener { view ->
             Navigation.findNavController(view).navigate(R.id.action_quotationsHistoryFragment_to_main_graph)
