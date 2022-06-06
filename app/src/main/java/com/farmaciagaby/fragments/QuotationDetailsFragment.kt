@@ -52,6 +52,7 @@ class QuotationDetailsFragment : BaseFragment() {
         // set supplier and date
         binding.tvSupplier.text = quotation.proveedor
         binding.tvDate.text = SimpleDateFormat("dd-MM-yyyy").format(quotation.fecha.toDate())
+        binding.tvDescription.text = quotation.descripcion
 
         // Set up quotation preview adapter
         val layoutManager = LinearLayoutManager(context)
