@@ -6,6 +6,7 @@
     <string name="button_finalize">Finalizar</string>
     <string name="button_share">Compartir</string>
     <string name="button_update">Actualizar</string>
+    <string name="button_delete">Eliminar</string>
 
     <!--    Navigation Drawer -->
     <string name="navigation_drawer_open">Open</string>
@@ -62,6 +63,7 @@
     <string name="successful_request_transaction_label">Gestión:&#160;</string>
     <string name="successful_request_date_label">Fecha:&#160;</string>
     <string name="successful_request_time_label">Hora:&#160;</string>
+    <string name="successful_request_description_label">Descripción:&#160;</string>
 
     <!--    Request Quotation Preview Screen -->
     <string name="quotation_preview_title">Solicitud de cotización</string>
