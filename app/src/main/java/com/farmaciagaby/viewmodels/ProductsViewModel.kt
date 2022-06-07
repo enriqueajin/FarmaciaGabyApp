@@ -1,19 +1,26 @@
 package com.farmaciagaby.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.farmaciagaby.models.Product
 import com.farmaciagaby.repositories.ProductsRepository
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductsViewModel: ViewModel() {
+class ProductsViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     lateinit var productDocRef: MutableLiveData<DocumentReference>  // Initialized every time is used to avoid hold old values
     var productsData = MutableLiveData<MutableList<Product>>()
+
+    // Save checked product list state when user is requesting a new quotation
+    private val _checkedProductList = MutableLiveData(state["checkedProductList"] ?: mutableListOf<Product>())
+    val checkedProductList: LiveData<MutableList<Product>> get() = _checkedProductList
+
+    fun saveCheckedProductState(products: MutableList<Product>) {
+        _checkedProductList.value = products
+        state["checkedProductList"] = _checkedProductList.value
+    }
 
     fun getAllProducts() {
         viewModelScope.launch(Dispatchers.Main) {

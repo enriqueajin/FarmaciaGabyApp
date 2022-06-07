@@ -69,7 +69,11 @@ class RequestQuotationFragment : BaseFragment() {
             viewModel.getAllProducts()
             viewModel.productsData.observe(requireActivity()) { productsList ->
                 mProductList = productsList
-                adapter = CheckProductsAdapter(mProductList)
+
+                // Observe checked products list to update the state
+                viewModel.checkedProductList.observe(requireActivity()) { checkedProductList ->
+                    adapter = CheckProductsAdapter(mProductList, checkedProductList)
+                }
                 binding.rvQuotationProducts.adapter = adapter
                 hideLoadingDialog()
             }
@@ -78,6 +82,10 @@ class RequestQuotationFragment : BaseFragment() {
         binding.btnContinue.setOnClickListener { view ->
             // Validate that checked products list is not empty
             if (adapter.getCheckedProducts().isNotEmpty()) {
+
+                // Save state checked products in view model
+                viewModel.saveCheckedProductState(adapter.getCheckedProducts())
+
                 for (product in adapter.getCheckedProducts()) {
                     Log.d("TAG", "producto: " + product.nombre)
                 }
