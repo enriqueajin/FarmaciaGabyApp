@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -53,8 +52,7 @@ class RequestQuotationPreviewFragment : BaseFragment() {
 
     private fun setData() {
         // Show action bar and set title
-        val actionBar = (activity as AppCompatActivity).supportActionBar
-        actionBar?.title = resources.getString(R.string.action_bar_quotation_preview)
+        setActionBarTitle(resources.getString(R.string.action_bar_quotation_preview))
 
         val productList = (gson.fromJson(args.productList, Array<Product>::class.java)).toList()
         val mappedProductList = productList.map { product -> product.nombre } as ArrayList<String>

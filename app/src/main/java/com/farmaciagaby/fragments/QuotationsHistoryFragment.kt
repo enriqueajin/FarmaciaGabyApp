@@ -37,7 +37,7 @@ class QuotationsHistoryFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentQuotationsHistoryBinding.inflate(inflater, container, false);
-        setData();
+        setData()
         return binding.root
     }
 
@@ -52,6 +52,15 @@ class QuotationsHistoryFragment : BaseFragment() {
     }
 
     private fun setData() {
+        // Show action bar and set title
+        val actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar?.title = resources.getString(R.string.action_bar_quotation_history)
+        actionBar?.show()
+
+        // Disable action bar back button
+//        actionBar?.setDisplayHomeAsUpEnabled(true)
+//        actionBar?.setHomeButtonEnabled(false)
+
         // Get user uid
         val sharedPref = activity?.getSharedPreferences(
             resources.getString(R.string.preference_file_key),
@@ -63,15 +72,6 @@ class QuotationsHistoryFragment : BaseFragment() {
         )
 
         Log.d("TAG", "user uid from main is: $userUid")
-
-        // Show action bar and set title
-        val actionBar = (activity as AppCompatActivity).supportActionBar
-        actionBar?.title = resources.getString(R.string.action_bar_quotation_history)
-        actionBar?.show()
-
-        // Disable action bar back button
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setHomeButtonEnabled(false)
 
         // Set up quotations history adapter
         binding.rvQuotations.layoutManager = LinearLayoutManager(context);

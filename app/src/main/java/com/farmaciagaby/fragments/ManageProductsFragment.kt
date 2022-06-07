@@ -51,6 +51,9 @@ class ManageProductsFragment : BaseFragment() {
     }
 
     private fun setData() {
+        // Set title to the action bar
+        setActionBarTitle(resources.getString(R.string.action_bar_manage_products))
+
         // Set up the manage products adapter
         binding.rvManageProducts.layoutManager = LinearLayoutManager(context)
 

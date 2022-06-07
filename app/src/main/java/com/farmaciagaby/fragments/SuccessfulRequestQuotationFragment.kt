@@ -39,6 +39,9 @@ class SuccessfulRequestQuotationFragment : BaseFragment() {
     }
 
     private fun setData() {
+        // Set title to the action bar
+        setActionBarTitle(resources.getString(R.string.action_bar_quotation_successful))
+
         // Get arguments
         uri = Uri.parse(args.uriString)
         val quotation = gson.fromJson(args.quotation, Detalle::class.java)
