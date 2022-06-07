@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -55,8 +54,7 @@ class RequestQuotationFragment : BaseFragment() {
 
     private fun setData() {
         // Show action bar and set title
-        val actionBar = (activity as AppCompatActivity).supportActionBar
-        actionBar?.title = resources.getString(R.string.action_bar_request_quotation)
+        setActionBarTitle(resources.getString(R.string.action_bar_request_quotation))
 
         // Set up the select quotation products adapter
         binding.rvQuotationProducts.layoutManager = LinearLayoutManager(context);

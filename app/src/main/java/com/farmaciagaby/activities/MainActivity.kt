@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(view);
 //        setUpNavigationDrawer()
         setUpNavConfig()
-
     }
 
     private fun setUpNavigationDrawer() {
@@ -111,6 +110,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar : Toolbar = findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Set title to action bar
+        supportActionBar?.title = resources.getString(R.string.action_bar_quotation_history)
 
         findViewById<TextView>(R.id.tv_logout).setOnClickListener {
             showSignOutDialog()
