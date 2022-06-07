@@ -8,10 +8,10 @@ import com.farmaciagaby.databinding.SelectProductItemBinding
 import com.farmaciagaby.models.Detalle
 import com.farmaciagaby.models.Product
 
-class CheckProductsAdapter(private var productList: MutableList<Product>) :
+class CheckProductsAdapter(private var productList: MutableList<Product>, checkedProducts: MutableList<Product> = arrayListOf()) :
     RecyclerView.Adapter<CheckProductsAdapter.ViewHolder>() {
 
-    private var checkedProductsList = arrayListOf<Product>()
+    private var checkedProductsList = checkedProducts
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = SelectProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,7 +43,7 @@ class CheckProductsAdapter(private var productList: MutableList<Product>) :
         return productList.size
     }
 
-    fun getCheckedProducts(): ArrayList<Product> {
+    fun getCheckedProducts(): MutableList<Product> {
         return checkedProductsList
     }
 
