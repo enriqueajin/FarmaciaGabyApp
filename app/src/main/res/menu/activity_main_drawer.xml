@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/nav_item_request_quotation"
+            android:icon="@drawable/ic_icono_farmacia"
+            android:title="@string/navigation_drawer_item_request_quotation" />
+
+        <item
+            android:id="@+id/nav_item_manage_products"
+            android:icon="@drawable/ic_icono_farmacia"
+            android:title="@string/navigation_drawer_item_manage_products" />
+    </group>
+</menu>
