@@ -21,6 +21,7 @@
     <string name="action_bar_quotation_preview">Revisar cotización</string>
     <string name="action_bar_quotation_successful">Solicitud exitosa</string>
     <string name="action_bar_manage_products">Administrar productos</string>
+    <string name="action_bar_quotation_details">Detalle de cotización</string>
 
     <!--    General menu -->
     <string name="general_menu_add_title">Agregar producto</string>

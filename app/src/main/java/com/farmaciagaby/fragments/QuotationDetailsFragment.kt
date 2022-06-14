@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.farmaciagaby.R
 import com.farmaciagaby.adapters.SimpleStringAdapter
 import com.farmaciagaby.databinding.FragmentQuotationDetailsBinding
 import com.farmaciagaby.models.Detalle
@@ -47,6 +48,9 @@ class QuotationDetailsFragment : BaseFragment() {
 
     @Suppress("UNCHECKED_CAST")
     private fun setData() {
+        // Set title to the action bar
+        setActionBarTitle(resources.getString(R.string.action_bar_quotation_details))
+
         val quotation = gson.fromJson(args.quotation, Detalle::class.java)
 
         // set supplier and date
